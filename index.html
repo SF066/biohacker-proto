@@ -1,0 +1,1179 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#F26522">
+<meta name="description" content="BIOHACKER — прототип интерфейса интернет-магазина пептидов, ноотропов и добавок.">
+<title>BIOHACKER - прототип интерфейса</title>
+</head>
+<body>
+<style>
+  :root{
+    --orange:#F26522; --orange-d:#DA551A;
+    --ink:#1D1D1F; --muted:#8B9096; --muted-2:#AAB0B7;
+    --line:#E8EAED; --line-2:#EEF0F3;
+    --bg:#FFFFFF; --soft:#F4F5F7; --soft-2:#F7F8FA;
+    --green:#2E9E5B; --green-bg:#E7F5ED;
+    --tg:#2AABEE; --wa:#25D366;
+    --radius:14px;
+    --shadow:0 6px 24px rgba(24,28,34,.06);
+    --shadow-hover:0 14px 36px rgba(24,28,34,.13);
+    --font:'Inter','Golos Text',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+    color-scheme: light;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{font-family:var(--font);color:var(--ink);background:#E9EBEE;-webkit-font-smoothing:antialiased;line-height:1.4}
+  img{max-width:100%;display:block}
+  a{color:inherit;text-decoration:none}
+  button{font-family:inherit;cursor:pointer;border:0;background:none}
+  a:focus:not(:focus-visible),button:focus:not(:focus-visible){outline:none}
+  a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--orange);outline-offset:2px;border-radius:4px}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+  .site{background:var(--bg);max-width:1220px;margin:0 auto;box-shadow:0 0 60px rgba(0,0,0,.05)}
+  .ic{width:16px;height:16px;flex:none;stroke:currentColor;stroke-width:1.6;fill:none}
+
+  /* ---------- top utility bar ---------- */
+  .topbar{background:var(--soft-2);border-bottom:1px solid var(--line-2);font-size:12.5px;color:#6B7178}
+  .topbar .wrap{display:flex;align-items:center;gap:26px;height:46px}
+  .topbar .tb-item{display:flex;align-items:center;gap:8px;white-space:nowrap}
+  .topbar .tb-item .ic{color:#9AA0A7}
+  .topbar .spacer{flex:1}
+  .topbar .free{color:var(--ink);font-weight:600}
+  .topbar .phone{color:var(--ink);font-weight:800;letter-spacing:.2px;white-space:nowrap}
+  .tb-contact{display:flex;align-items:center;gap:12px}
+  .tb-ph{display:flex;flex-direction:column;align-items:flex-end;line-height:1.2}
+  .tb-ph .phone{color:var(--ink);font-weight:800;letter-spacing:.2px;font-size:13.5px}
+  .tb-ph .free{color:#8A9098;font-size:11px;font-weight:500}
+  .tb-socs{display:flex;gap:5px}
+  .topbar .soc{width:24px;height:24px;border-radius:7px;display:flex;align-items:center;justify-content:center;color:#fff;background:var(--orange)}
+  .topbar .soc:hover{background:var(--orange-d)}
+  .topbar .soc svg{width:14px;height:14px;fill:currentColor;stroke:none}
+
+  /* ---------- header ---------- */
+  .header{border-bottom:1px solid var(--line)}
+  .header .wrap{display:flex;align-items:center;gap:20px;height:84px}
+  .logo{font-weight:800;font-size:24px;letter-spacing:-.5px;flex:none}
+  .logo .b{color:var(--ink)} .logo .h{color:var(--orange)}
+  .catalog-wrap{position:relative;flex:none}
+  .catalog-btn{display:flex;align-items:center;gap:10px;border:1.5px solid var(--orange);color:var(--orange);font-weight:600;font-size:14.5px;height:46px;padding:0 20px;border-radius:12px;flex:none;transition:.15s}
+  .catalog-btn .bars{display:inline-flex;flex-direction:column;gap:3px}
+  .catalog-btn .bars span{width:16px;height:2px;background:var(--orange);border-radius:2px;transition:.15s}
+  .catalog-wrap.open .catalog-btn{background:var(--orange);color:#fff}
+  .catalog-wrap.open .catalog-btn .bars span{background:#fff}
+  .mega{position:absolute;top:calc(100% + 12px);left:0;width:940px;max-width:calc(100vw - 40px);background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 22px 54px rgba(24,28,34,.17);z-index:60;overflow:hidden;opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .16s,transform .16s,visibility .16s}
+  .catalog-wrap.open .mega{opacity:1;visibility:visible;transform:none}
+  .mega-inner{display:grid;grid-template-columns:262px 1fr}
+  .mega-rail{background:var(--soft-2);border-right:1px solid var(--line);padding:16px 14px;display:flex;flex-direction:column;gap:2px}
+  .mega-cat{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-radius:9px;font-size:14px;font-weight:500;color:#3A3F45;cursor:pointer}
+  .mega-cat svg{opacity:.35}
+  .mega-cat:hover,.mega-cat.on{background:#fff;color:var(--orange);font-weight:600}
+  .mega-cat.on svg{opacity:1}
+  .mega-body{padding:26px 30px;min-height:328px}
+  .mega-panel{display:none} .mega-panel.on{display:block}
+  .mega-list{list-style:none;margin:0;padding:0;columns:3;column-gap:28px}
+  .mega-list li{margin-bottom:11px;break-inside:avoid}
+  .mega-list li a{font-size:13.5px;color:#41464C;cursor:pointer}
+  .mega-list li a:hover{color:var(--orange)}
+  .mega-foot{border-top:1px solid var(--line);padding:14px 30px;display:flex;gap:26px}
+  .mega-foot a{color:var(--orange);font-weight:600;font-size:13.5px;cursor:pointer}
+  .mega-foot a:hover{color:var(--orange-d)}
+  .search{flex:1;display:flex;align-items:center;height:46px;background:var(--soft);border-radius:12px;padding:0 16px;color:var(--muted);font-size:14px}
+  .search input{flex:1;border:0;background:none;outline:none;font-family:inherit;font-size:14px;color:var(--ink)}
+  .search input::placeholder{color:var(--muted-2)}
+  .search .go{width:34px;height:34px;display:flex;align-items:center;justify-content:center;color:#5A6068}
+  .search .go .ic{stroke-width:2}
+  .search .go:hover{color:var(--ink)}
+  .hact{display:flex;align-items:center;gap:22px;flex:none}
+  .loc{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:500}
+  .loc .ic{width:18px;height:18px;color:var(--ink)}
+  .hbtn{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;color:#6B7178;position:relative}
+  .hbtn .ic{width:22px;height:22px;color:var(--ink);stroke-width:1.5}
+  .hbtn .badge{position:absolute;top:-6px;right:6px;background:var(--orange);color:#fff;font-size:10px;font-weight:700;min-width:16px;height:16px;border-radius:9px;display:flex;align-items:center;justify-content:center;padding:0 4px}
+
+  /* ---------- nav ---------- */
+  .nav{border-bottom:1px solid var(--line)}
+  .nav .wrap{display:flex;align-items:center;gap:30px;height:52px;font-size:14px;font-weight:500}
+  .nav a{color:#3A3F45;white-space:nowrap}
+  .nav a:hover{color:var(--orange)}
+  .nav a.acc{color:var(--orange);font-weight:700}
+
+  /* ---------- sections ---------- */
+  .section{padding:26px 0}
+  .sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+  .sec-head h2{font-size:26px;font-weight:800;letter-spacing:-.5px;margin:0}
+  .see-all{color:var(--orange);font-weight:600;font-size:14px;display:flex;align-items:center;gap:8px}
+  .carousel-ctrl{display:flex;gap:8px}
+  .carousel-ctrl button{width:34px;height:34px;border-radius:9px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--muted)}
+  .carousel-ctrl button:hover{border-color:var(--orange);color:var(--orange)}
+
+  /* ---------- hero ---------- */
+  .hero{position:relative;background:linear-gradient(120deg,#F3F4F6 0%,#ECEEF1 55%,#E6E8EC 100%);border-radius:18px;overflow:hidden;padding:48px;min-height:300px;display:flex;align-items:center}
+  .hero-txt{max-width:460px;position:relative;z-index:2}
+  .kicker{color:var(--orange);font-weight:700;font-size:12px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:16px}
+  .hero h1{font-size:44px;line-height:1.06;font-weight:800;letter-spacing:-1.2px;margin:0 0 18px;text-wrap:balance}
+  .hero p{color:#5A6068;font-size:16px;margin:0 0 28px;max-width:340px}
+  .btn{display:inline-flex;align-items:center;gap:12px;background:var(--orange);color:#fff;font-weight:600;font-size:14.5px;height:48px;padding:0 24px;border-radius:11px;transition:background .15s}
+  .btn:hover{background:var(--orange-d)}
+  .btn .arr{display:flex;align-items:center;justify-content:center;width:22px;height:22px;background:rgba(255,255,255,.22);border-radius:6px}
+  .btn .arr .ic{color:#fff;stroke-width:2.2}
+  .btn-ghost{background:var(--soft);color:var(--ink)}
+  .btn-ghost:hover{background:#EAECEF}
+  .btn-ghost .arr{background:rgba(0,0,0,.06)} .btn-ghost .arr .ic{color:var(--orange)}
+  .podium{position:absolute;right:7%;bottom:0;width:280px;height:100%;display:flex;align-items:flex-end;justify-content:center;z-index:1}
+  .dots{position:absolute;left:48px;bottom:24px;display:flex;gap:7px}
+  .dots span{width:8px;height:8px;border-radius:9px;background:#C5C9CE}
+  .dots span.on{width:22px;background:var(--orange)}
+
+  /* ---------- category tiles ---------- */
+  .cats{display:grid;grid-template-columns:repeat(8,1fr);gap:14px}
+  .cat{background:var(--soft-2);border:1px solid var(--line-2);border-radius:var(--radius);padding:20px 8px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;transition:box-shadow .15s,transform .15s}
+  .cat:hover{box-shadow:var(--shadow);transform:translateY(-2px)}
+  .cat .ci{width:30px;height:30px;color:var(--orange);stroke-width:1.4;fill:none;stroke:currentColor}
+  .cat span{font-size:12.5px;font-weight:500;color:#3A3F45;line-height:1.2}
+
+  /* ---------- promo blocks ---------- */
+  .promo-grid{display:grid;grid-template-columns:1.55fr 1fr;gap:16px}
+  .promo-lg{background:linear-gradient(120deg,#EDEFF2,#E4E7EB);border-radius:18px;padding:40px;position:relative;overflow:hidden;min-height:320px;display:flex;flex-direction:column;justify-content:center}
+  .promo-lg h3{font-size:34px;font-weight:800;letter-spacing:-.8px;margin:0 0 14px;max-width:60%}
+  .promo-lg p{color:#5A6068;font-size:14px;margin:0 0 22px;max-width:55%}
+  .promo-lg .link{color:var(--orange);font-weight:600;font-size:14px;display:inline-flex;gap:8px;align-items:center}
+  .promo-lg .brain{position:absolute;right:24px;top:50%;transform:translateY(-50%);width:230px;height:200px;opacity:.9}
+  .promo-excl h3{font-size:44px;letter-spacing:-1px;margin-bottom:12px}
+  .promo-excl p{max-width:58%;font-size:15px}
+  .excl-kick{display:inline-flex;align-items:center;gap:8px;color:var(--orange);font-weight:700;font-size:12px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px}
+  .promo-col{display:flex;flex-direction:column;gap:16px}
+  .promo-sm{background:var(--soft-2);border:1px solid var(--line-2);border-radius:18px;padding:26px 28px;position:relative;overflow:hidden;flex:1;display:flex;flex-direction:column;justify-content:center;min-height:152px}
+  .promo-sm h4{font-size:18px;font-weight:700;margin:0 0 8px;max-width:62%}
+  .promo-sm p{font-size:12.5px;color:#6B7178;margin:0 0 14px;max-width:58%}
+  .promo-sm .link{color:var(--orange);font-weight:600;font-size:13px}
+  .promo-sm .emoji{position:absolute;right:22px;top:50%;transform:translateY(-50%);font-size:64px;opacity:.9}
+
+  /* ---------- trust bar ---------- */
+  .trust{display:grid;grid-template-columns:repeat(5,1fr);background:var(--soft-2);border:1px solid var(--line-2);border-radius:var(--radius);overflow:hidden}
+  .trust .t{display:flex;align-items:center;gap:12px;padding:20px 22px;font-size:12.5px;color:#4A4F55;line-height:1.25;border-right:1px solid var(--line-2)}
+  .trust .t:last-child{border-right:0}
+  .trust .t .ic{width:26px;height:26px;color:var(--muted);flex:none;stroke-width:1.4}
+
+  /* ---------- product cards ---------- */
+  .prod-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:16px;position:relative;transition:box-shadow .15s,transform .15s;display:flex;flex-direction:column}
+  .card:hover{box-shadow:var(--shadow-hover);transform:translateY(-3px)}
+  .card .flag{position:absolute;top:14px;left:14px;font-size:11px;font-weight:700;padding:4px 10px;border-radius:7px;z-index:2}
+  .flag.hit{background:var(--orange);color:#fff} .flag.new{background:#1D1D1F;color:#fff}
+  .card .fav{position:absolute;top:14px;right:14px;color:var(--muted-2);z-index:2}
+  .card .fav .ic{width:19px;height:19px;fill:none;stroke:currentColor}
+  .card .fav:hover{color:var(--orange)}
+  .card .thumb{height:150px;display:flex;align-items:center;justify-content:center;margin:8px 0 14px}
+  .card .thumb svg{height:140px;width:auto}
+  .card .cat-tag{font-size:12px;color:var(--muted);margin-bottom:6px}
+  .card h3{font-size:15px;font-weight:600;margin:0 0 10px;line-height:1.3}
+  .card .rate{display:flex;align-items:center;gap:6px;font-size:12.5px;color:#6B7178;margin-bottom:12px}
+  .card .foot{display:flex;align-items:center;justify-content:space-between;margin-top:auto}
+  .card .price{font-size:18px;font-weight:800}
+  .add{width:40px;height:40px;border-radius:10px;background:var(--orange);display:flex;align-items:center;justify-content:center;color:#fff;flex:none;transition:background .15s}
+  .add:hover{background:var(--orange-d)}
+  .add .ic{width:19px;height:19px;color:#fff;stroke-width:1.7}
+
+  /* ---------- expert consultation ---------- */
+  .consult{background:linear-gradient(120deg,#EFF1F4,#E6E9ED);border-radius:20px;padding:40px 48px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:30px;min-height:196px}
+  .consult h3{font-size:28px;font-weight:800;letter-spacing:-.6px;margin:0 0 12px;max-width:80%}
+  .consult p{font-size:14.5px;color:#5A6068;margin:0 0 22px;max-width:70%}
+  .consult .doc{font-size:150px;line-height:1;flex:none;filter:drop-shadow(0 8px 20px rgba(0,0,0,.1))}
+
+  /* ---------- consultation + partner row ---------- */
+  .duo{display:grid;grid-template-columns:1fr 1.42fr;gap:16px;align-items:stretch}
+  .duo .consult{height:100%;flex-direction:column;align-items:flex-start;justify-content:center;padding:36px 36px;gap:0}
+  .duo .consult h3{font-size:24px;max-width:100%;margin-bottom:12px}
+  .duo .consult p{max-width:84%}
+  .duo .consult .doc{position:absolute;right:-14px;bottom:-24px;font-size:120px;opacity:.85;pointer-events:none}
+  .duo .partner{height:100%;padding:38px 40px;gap:30px}
+  .duo .partner h3{font-size:26px;margin-bottom:12px}
+  .duo .partner p{font-size:14px;margin-bottom:22px}
+
+  /* ---------- partner program ---------- */
+  .partner{background:radial-gradient(120% 140% at 85% 0%,#33333A 0%,#1D1D1F 55%);border-radius:20px;padding:46px 48px;color:#fff;position:relative;overflow:hidden;display:grid;grid-template-columns:1.15fr 1fr;gap:40px;align-items:center}
+  .partner .kick{color:var(--orange);font-weight:700;font-size:12px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:14px}
+  .partner h3{font-size:34px;font-weight:800;letter-spacing:-.7px;margin:0 0 14px;text-wrap:balance}
+  .partner p{color:#C3C7CD;font-size:15px;line-height:1.55;margin:0 0 26px;max-width:440px}
+  .partner .btn{height:52px}
+  .partner .perks{display:flex;flex-direction:column;gap:14px}
+  .perk{display:flex;align-items:center;gap:16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);border-radius:14px;padding:18px 20px}
+  .perk .pn{font-size:22px;font-weight:800;color:var(--orange);min-width:74px}
+  .perk .pt{font-size:13.5px;color:#DDE0E4;line-height:1.35}
+  .perk .pt b{color:#fff;display:block;font-size:14.5px;margin-bottom:2px}
+
+  /* ---------- reviews slider ---------- */
+  .reviews-mask{overflow:hidden;-webkit-mask:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);mask:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent)}
+  .reviews-track{display:flex;gap:16px;width:max-content;animation:marquee 46s linear infinite}
+  .reviews-mask:hover .reviews-track{animation-play-state:paused}
+  @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  .review{width:352px;flex:none;background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px}
+  .review .rstars{color:#FBB040;letter-spacing:2px;font-size:15px;margin-bottom:12px}
+  .review .rtext{font-size:14px;color:#41464C;line-height:1.55;margin-bottom:18px}
+  .review .rauthor{display:flex;align-items:center;gap:12px}
+  .review .rav{width:40px;height:40px;border-radius:50%;background:var(--soft);display:flex;align-items:center;justify-content:center;font-weight:700;color:#6B7178;flex:none}
+  .review .rname{font-size:13.5px;font-weight:600}
+  .review .rmeta{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:5px}
+  .review .rmeta .v{color:var(--green)}
+
+  /* ---------- FAQ ---------- */
+  .faq{max-width:860px;margin:0 auto}
+  .faq details{border:1px solid var(--line);border-radius:12px;margin-bottom:12px;background:#fff;overflow:hidden}
+  .faq details[open]{border-color:#DFE2E6;box-shadow:var(--shadow)}
+  .faq summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 22px;font-size:16px;font-weight:600}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary .pm{width:26px;height:26px;flex:none;border-radius:8px;background:var(--soft);display:flex;align-items:center;justify-content:center;color:var(--orange);font-size:18px;transition:transform .2s}
+  .faq details[open] summary .pm{transform:rotate(45deg)}
+  .faq .ans{padding:0 22px 22px;font-size:14.5px;color:#5A6068;line-height:1.6;max-width:720px}
+
+  /* ---------- articles ---------- */
+  .articles{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .art{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;transition:box-shadow .15s,transform .15s;display:flex;flex-direction:column}
+  .art:hover{box-shadow:var(--shadow-hover);transform:translateY(-3px)}
+  .art .cover{height:172px;position:relative;display:flex;align-items:center;justify-content:center;font-size:56px}
+  .art .atag{position:absolute;top:14px;left:14px;background:rgba(255,255,255,.92);color:var(--orange);font-size:11px;font-weight:700;padding:5px 11px;border-radius:7px}
+  .art .abody{padding:20px 22px;display:flex;flex-direction:column;flex:1}
+  .art .adate{font-size:12px;color:var(--muted);margin-bottom:8px}
+  .art h4{font-size:17px;font-weight:700;margin:0 0 14px;line-height:1.3}
+  .art .aread{margin-top:auto;color:var(--orange);font-weight:600;font-size:13.5px;display:inline-flex;align-items:center;gap:8px}
+
+  /* ---------- stats strip ---------- */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;padding:34px 0}
+  .stats-split{padding:0}
+  .stats-split .stat{background:var(--soft-2);border:1px solid var(--line-2);border-radius:var(--radius);padding:22px 24px}
+  .stat{display:flex;align-items:center;gap:14px}
+  .stat .si{width:44px;height:44px;color:var(--orange);flex:none;stroke-width:1.3;fill:none;stroke:currentColor}
+  .stat b{font-size:23px;font-weight:800;display:block;letter-spacing:-.5px;line-height:1.1}
+  .stat span{font-size:12.5px;color:var(--muted)}
+
+  /* ---------- footer ---------- */
+  .footer{background:#1A1A1C;color:#AEB3B9;margin-top:10px}
+  .footer .ftop{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.2fr;gap:34px;padding:52px 0 40px}
+  .footer .logo{font-size:22px;margin-bottom:16px} .footer .logo .b{color:#fff}
+  .footer .fabout{font-size:13px;line-height:1.6;color:#8A9098;max-width:280px;margin:0 0 20px}
+  .footer .fsoc{display:flex;gap:10px}
+  .footer .fsoc a{width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;color:#fff;transition:background .15s}
+  .footer .fsoc a:hover{background:var(--orange)}
+  .footer .fsoc svg{width:18px;height:18px;fill:currentColor}
+  .footer h5{color:#fff;font-size:14px;font-weight:700;margin:4px 0 18px}
+  .footer ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:11px}
+  .footer ul a{font-size:13.5px;color:#9AA0A7;transition:color .15s}
+  .footer ul a:hover{color:var(--orange)}
+  .footer .fcontact .cphone{color:#fff;font-size:19px;font-weight:800;margin-bottom:6px}
+  .footer .fcontact .cfree{font-size:12.5px;color:#8A9098;margin-bottom:16px}
+  .footer .fcontact .cmail{font-size:13.5px;color:#9AA0A7;margin-bottom:16px}
+  .footer .fcta{display:flex;gap:10px}
+  .footer .fcta a{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:#fff;background:rgba(255,255,255,.07);border-radius:10px;padding:10px 14px}
+  .footer .fcta a.tg:hover{background:var(--tg)} .footer .fcta a.wa:hover{background:var(--wa)}
+  .footer .fcta svg{width:16px;height:16px;fill:currentColor}
+  .footer .fbottom{border-top:1px solid rgba(255,255,255,.08);padding:22px 0 30px;display:flex;flex-wrap:wrap;gap:8px 24px;align-items:center;font-size:12.5px;color:#71767D}
+  .footer .fbottom a{color:#8A9098} .footer .fbottom a:hover{color:var(--orange)}
+  .footer .fbottom .sep{flex:1}
+  .footer .fdisc{padding-bottom:34px;font-size:11.5px;color:#5D6169;line-height:1.5;max-width:900px}
+
+  /* ---------- prototype switcher ---------- */
+  .switcher{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);z-index:99;background:#1D1D1F;border-radius:14px;padding:6px;display:flex;gap:4px;box-shadow:0 10px 34px rgba(0,0,0,.3)}
+  .switcher button{color:#B9BEC5;font-size:13px;font-weight:600;padding:9px 18px;border-radius:10px;transition:.15s}
+  .switcher button.on{background:var(--orange);color:#fff}
+  .switcher .lab{color:#6B7178;font-size:11px;align-self:center;padding:0 10px 0 6px}
+
+  /* ================= PRODUCT PAGE ================= */
+  .crumbs{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);padding:22px 0 6px}
+  .crumbs a:hover{color:var(--orange)} .crumbs .sep{color:var(--muted-2)} .crumbs .cur{color:#3A3F45}
+  .pdp{display:grid;grid-template-columns:1.05fr .95fr;gap:34px;padding-top:14px}
+  .gallery{display:grid;grid-template-columns:78px 1fr;gap:16px}
+  .thumbs{display:flex;flex-direction:column;gap:12px}
+  .thumbs .th{border:1.5px solid var(--line);border-radius:12px;height:78px;display:flex;align-items:center;justify-content:center;background:var(--soft-2);cursor:pointer}
+  .thumbs .th.on{border-color:var(--orange)}
+  .thumbs .th svg{height:60px;width:auto}
+  .thumbs .more{border:1.5px solid var(--line);border-radius:12px;height:44px;display:flex;align-items:center;justify-content:center;color:var(--muted)}
+  .stage{background:linear-gradient(150deg,#F4F5F7,#EBEDF0);border-radius:18px;display:flex;align-items:center;justify-content:center;position:relative;min-height:440px;overflow:hidden}
+  .stage svg.main{height:300px;width:auto;position:relative;z-index:2}
+  .stage .mol{position:absolute;inset:0;opacity:.5}
+  .pinfo .tags{display:flex;gap:10px;margin-bottom:14px}
+  .tag{font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:8px}
+  .tag.mg{background:var(--soft);color:#4A4F55} .tag.stock{background:var(--green-bg);color:var(--green)}
+  .pinfo h1{font-size:32px;font-weight:800;letter-spacing:-.6px;margin:0 0 14px;line-height:1.12}
+  .pinfo h1 small{font-weight:500;color:#4A4F55}
+  .meta-row{display:flex;align-items:center;gap:16px;font-size:13px;color:var(--muted);margin-bottom:24px}
+  .meta-row .stars{color:#D7DBDF;letter-spacing:2px}
+  .price-lg{font-size:34px;font-weight:800;letter-spacing:-.5px;margin-bottom:22px}
+  .buy-row{display:flex;gap:14px;align-items:stretch;margin-bottom:14px}
+  .qty{display:flex;align-items:center;border:1px solid var(--line);border-radius:12px;height:54px;overflow:hidden}
+  .qty button{width:48px;height:100%;font-size:20px;color:#4A4F55;display:flex;align-items:center;justify-content:center}
+  .qty button:hover{color:var(--orange)}
+  .qty input{width:44px;height:100%;border:0;text-align:center;font-size:16px;font-weight:600;font-family:inherit;outline:none}
+  .btn-buy{flex:1;justify-content:center;height:54px;font-size:15px}
+  .icon-btn{width:54px;height:54px;border:1px solid var(--line);border-radius:12px;display:flex;align-items:center;justify-content:center;color:var(--muted)}
+  .icon-btn:hover{border-color:var(--orange);color:var(--orange)}
+  .btn-1click{width:100%;justify-content:center;height:54px;background:var(--soft);color:var(--ink);font-size:15px;margin-bottom:22px}
+  .btn-1click:hover{background:#EAECEF} .btn-1click .bolt{color:var(--orange)}
+  .consult-box{display:flex;align-items:center;gap:16px;background:var(--soft-2);border:1px solid var(--line-2);border-radius:14px;padding:16px 20px;margin-bottom:22px}
+  .consult-box .ava{width:46px;height:46px;border-radius:11px;background:#DDE1E6;display:flex;align-items:center;justify-content:center;font-size:24px;flex:none}
+  .consult-box .ct b{font-size:14px;display:block;margin-bottom:2px}
+  .consult-box .ct span{font-size:12.5px;color:var(--muted)}
+  .consult-box .go2{margin-left:auto;color:var(--orange)}
+  .del-2{display:grid;grid-template-columns:1fr 1fr;gap:14px 34px}
+  .del{display:flex;align-items:center;gap:12px;font-size:13px}
+  .del .ic{width:22px;height:22px;color:var(--muted);flex:none;stroke-width:1.4}
+  .del b{font-weight:600;display:block} .del span{color:var(--muted);font-size:12px}
+  .feat{display:grid;grid-template-columns:repeat(5,1fr);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin-top:30px}
+  .feat .f{padding:22px 16px;text-align:center;border-right:1px solid var(--line-2);display:flex;flex-direction:column;align-items:center;gap:12px}
+  .feat .f:last-child{border-right:0}
+  .feat .f .ic{width:26px;height:26px;color:var(--orange);stroke-width:1.4}
+  .feat .f span{font-size:12.5px;color:#4A4F55;line-height:1.25}
+  .tabs{display:flex;gap:30px;border-bottom:1px solid var(--line);margin-top:36px}
+  .tabs .tab{font-size:16px;font-weight:600;color:var(--muted);padding-bottom:14px;position:relative}
+  .tabs .tab.on{color:var(--orange)}
+  .tabs .tab.on:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--orange)}
+  .tab-panels{padding-top:6px}
+  .tab-panel{display:none} .tab-panel.on{display:block}
+  .warn{display:flex;gap:14px;background:var(--soft-2);border-left:3px solid var(--orange);border-radius:0 10px 10px 0;padding:16px 20px;font-size:13px;color:#5A6068;line-height:1.55;margin-top:22px}
+  .warn b{color:var(--ink)}
+  .rich{max-width:880px;font-size:14.5px;color:#41464C;line-height:1.65}
+  .rich .lead{font-size:16px;color:#2C3037;margin:20px 0 6px}
+  .rich h3{font-size:19px;font-weight:800;color:var(--ink);letter-spacing:-.3px;margin:26px 0 12px}
+  .rich p{margin:0 0 12px}
+  .effects{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:6px 0}
+  .effect{background:var(--soft-2);border:1px solid var(--line-2);border-radius:12px;padding:16px 18px}
+  .effect b{display:block;font-size:14.5px;margin-bottom:4px;color:var(--ink)}
+  .effect span{font-size:13px;color:#6B7178}
+  .ticks{list-style:none;padding:0;margin:6px 0;display:flex;flex-direction:column;gap:10px}
+  .ticks li{position:relative;padding-left:30px;font-size:14px}
+  .ticks li:before{content:"✓";position:absolute;left:0;top:0;width:20px;height:20px;border-radius:6px;background:var(--green-bg);color:var(--green);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center}
+  .spec{border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:6px 0}
+  .srow{display:flex;justify-content:space-between;gap:20px;padding:13px 18px;font-size:14px;border-bottom:1px solid var(--line-2)}
+  .srow:last-child{border-bottom:0} .srow span{color:var(--muted)} .srow b{font-weight:600}
+  .certs{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:8px}
+  .cert{border:1px solid var(--line);border-radius:12px;overflow:hidden;transition:box-shadow .15s,transform .15s;cursor:pointer}
+  .cert:hover{box-shadow:var(--shadow-hover);transform:translateY(-3px)}
+  .cert-doc{height:180px;background:var(--soft-2);display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--line-2)}
+  .cert-doc svg{height:132px}
+  .cert-cap{padding:14px 16px} .cert-cap b{display:block;font-size:14px;margin-bottom:3px} .cert-cap span{font-size:12.5px;color:var(--muted)}
+  .rev-summary{display:flex;align-items:center;gap:16px;background:var(--soft-2);border:1px solid var(--line-2);border-radius:14px;padding:18px 22px;margin:18px 0 8px}
+  .rev-summary .rs-num{font-size:34px;font-weight:800;line-height:1}
+  .reviews-col{display:flex;flex-direction:column;gap:14px;max-width:780px;margin-top:6px}
+  .reviews-col .review{width:auto}
+
+  /* ---------- mobile burger nav (hidden on desktop) ---------- */
+  .burger{display:none;width:44px;height:44px;align-items:center;justify-content:center;color:var(--ink);margin-left:-6px}
+  .mnav-ov{display:none;position:fixed;inset:0;background:rgba(20,22,26,.5);z-index:200;opacity:0;pointer-events:none;transition:opacity .25s}
+  .mnav-ov.show{opacity:1;pointer-events:auto}
+  .mnav{display:none;position:fixed;top:0;left:0;bottom:0;width:86%;max-width:360px;background:#fff;z-index:201;flex-direction:column;transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);box-shadow:0 0 60px rgba(0,0,0,.28)}
+  .mnav.open{transform:none}
+  .mnav-head{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--line);flex:none}
+  .mnav-head .logo{font-size:20px}
+  .mnav-close{width:40px;height:40px;display:flex;align-items:center;justify-content:center;color:#4A4F55;margin-right:-8px}
+  .mnav-body{overflow-y:auto;padding:14px 18px 32px;-webkit-overflow-scrolling:touch}
+  .mnav-phone{display:flex;flex-direction:column;background:var(--soft-2);border:1px solid var(--line-2);border-radius:12px;padding:12px 16px}
+  .mnav-phone b{font-size:17px;font-weight:800}
+  .mnav-phone span{font-size:12px;color:var(--muted);margin-top:2px}
+  .mnav-lab{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-2);margin:20px 0 4px;padding-left:2px}
+  .mnav-cats .mcat{border-bottom:1px solid var(--line-2)}
+  .mnav-cats summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 2px;font-size:15px;font-weight:600}
+  .mnav-cats summary::-webkit-details-marker{display:none}
+  .mnav-cats summary .ic{color:var(--muted);transition:transform .2s;flex:none}
+  .mnav-cats .mcat[open] summary .ic{transform:rotate(90deg);color:var(--orange)}
+  .mnav-cats ul{list-style:none;margin:0 0 8px;padding:2px 0 8px 6px;display:flex;flex-direction:column;gap:1px}
+  .mnav-cats ul a{display:block;padding:8px 6px;font-size:14px;color:#41464C;border-radius:8px}
+  .mnav-cats ul a:active{background:var(--soft)}
+  .mnav-links{display:flex;flex-direction:column}
+  .mnav-links a{padding:13px 2px;font-size:15px;font-weight:600;border-bottom:1px solid var(--line-2)}
+  .mnav-links a:first-child{color:var(--orange)}
+  .mnav-socs{display:flex;gap:10px;margin-top:24px}
+  .mnav-socs .soc{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:var(--orange);color:#fff}
+  .mnav-socs .soc svg{width:20px;height:20px;fill:currentColor;stroke:none}
+
+  /* ---------- PDP mobile swipe gallery (hidden on desktop) ---------- */
+  .mgal{display:none;position:relative}
+  .mgal-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;border-radius:16px;background:linear-gradient(150deg,#F4F5F7,#EBEDF0)}
+  .mgal-track::-webkit-scrollbar{display:none}
+  .mgal-slide{flex:0 0 100%;scroll-snap-align:center;aspect-ratio:4/5;display:flex;align-items:center;justify-content:center;padding:18px}
+  .mgal-slide svg{height:80%;width:auto;max-width:78%}
+  .mgal-crumbs{position:absolute;top:12px;left:12px;background:rgba(255,255,255,.82);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);border-radius:9px;padding:6px 11px;font-size:12px;color:#3A3F45;z-index:2}
+  .mgal-crumbs a{color:var(--muted)}
+  .mgal-dots{display:flex;justify-content:center;gap:6px;margin-top:12px}
+  .mgal-dots span{width:7px;height:7px;border-radius:2px;background:#D2D6DB;transition:background .2s,width .2s}
+  .mgal-dots span.on{background:var(--orange);width:18px}
+  /* collapsible description (mobile) */
+  .rich-toggle{display:none;align-items:center;gap:6px;margin-top:10px;color:var(--orange);font-weight:600;font-size:14px}
+  .rich-toggle .ic{width:16px;height:16px;stroke-width:2;transition:transform .2s}
+  .rich.open .rich-toggle .ic{transform:rotate(180deg)}
+
+  /* infinite marquee for stat/trust points (activated on mobile) */
+  .stats-split .mq,.trust .mq{display:contents}
+  .mq-dup{display:none}
+  .trust .mq>.t:nth-of-type(5){border-right:0}
+  @keyframes mq-run{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  .page{display:none} .page.on{display:block}
+  @media(prefers-reduced-motion:reduce){.reviews-track,.stats-split .mq,.trust .mq{animation:none}}
+  @media(max-width:1000px){
+    .cats{grid-template-columns:repeat(4,1fr)}
+    .prod-grid{grid-template-columns:repeat(2,1fr)}
+    .trust{grid-template-columns:repeat(2,1fr)}
+    .trust .t{border-bottom:1px solid var(--line-2)}
+    .stats{grid-template-columns:repeat(2,1fr)}
+    .promo-grid,.split,.pdp,.partner,.articles{grid-template-columns:1fr}
+    .feat{grid-template-columns:repeat(2,1fr)}
+    .footer .ftop{grid-template-columns:1fr 1fr}
+    .hero h1{font-size:32px} .topbar .tb-item:nth-child(3){display:none}
+    .duo{grid-template-columns:1fr}
+  }
+
+  /* ================= MOBILE (≤768px) ================= */
+  @media(max-width:768px){
+    .wrap{padding:0 14px}
+    .section{padding:20px 0}
+    .sec-head{gap:12px}
+    .sec-head h2{font-size:21px}
+
+    /* hide desktop chrome, show burger + off-canvas */
+    .topbar{display:none}
+    .nav{display:none}
+    .catalog-wrap{display:none}
+    .burger{display:flex}
+    .mnav{display:flex}
+    .mnav-ov{display:block}
+
+    /* header: row1 = burger + logo + cart, row2 = search */
+    .header .wrap{flex-wrap:wrap;height:auto;gap:12px 8px;padding-top:12px;padding-bottom:12px}
+    .burger{order:1}
+    .logo{order:2;font-size:22px}
+    .hact{order:3;margin-left:auto;gap:20px}
+    .loc{display:none}
+    .hbtn{font-size:0;gap:0}
+    .hbtn .ic{width:25px;height:25px}
+    .hbtn .badge{font-size:10px;top:-7px;right:-7px}
+    .search{order:4;flex:1 1 100%;height:46px}
+
+    /* hero → art on top, compact CTA at bottom */
+    .hero{flex-direction:column;text-align:center;padding:22px 22px 26px;min-height:0;gap:0}
+    .podium{order:1;position:static;width:100%;height:140px;margin:0 0 14px}
+    .hero-txt{order:2;max-width:100%}
+    .hero .kicker{font-size:11px}
+    .hero h1{font-size:26px;letter-spacing:-.6px;margin-bottom:12px}
+    .hero p{font-size:14.5px;max-width:100%;margin:0 auto 20px}
+    .hero .btn{width:auto}
+    .dots{display:none}
+
+    /* stat points → infinite auto-marquee */
+    .stats-split{display:block;overflow:hidden;margin:0 -14px}
+    .stats-split .mq{display:flex;gap:12px;width:max-content;animation:mq-run 24s linear infinite;padding-left:12px}
+    .stats-split .mq .stat{flex:0 0 228px;padding:18px 18px}
+    .stat .si{width:36px;height:36px}
+    .stat b{font-size:19px}
+
+    /* trust points → infinite auto-marquee (inside rounded mask) */
+    .trust{display:block;overflow:hidden}
+    .trust .mq{display:flex;width:max-content;animation:mq-run 30s linear infinite}
+    .trust .mq .t{flex:0 0 208px;border-right:1px solid var(--line-2);border-bottom:0}
+    .mq-dup{display:flex}
+
+    /* promo banners → stacked, art centered in flow */
+    .promo-grid{gap:14px}
+    .promo-lg{padding:24px 20px;min-height:0;align-items:flex-start;text-align:left}
+    .promo-lg h3,.promo-excl h3{font-size:24px;max-width:100%}
+    .promo-lg p,.promo-excl p{max-width:100%;margin-bottom:14px}
+    .promo-lg .brain{order:4;position:static;transform:none;width:104px;height:auto;margin:2px 0 14px}
+    .promo-lg .link{order:5;justify-content:flex-start}
+    .promo-col .promo-sm{padding:22px 22px;min-height:0}
+    .promo-sm h4{max-width:74%}
+    .promo-sm p{max-width:78%}
+    .promo-sm .emoji{font-size:48px;right:16px}
+
+    /* product cards — show only 6 on mobile */
+    .prod-grid{gap:12px}
+    .prod-grid .card:nth-child(n+7){display:none}
+    .card{padding:12px}
+    .card .thumb{height:118px;margin:6px 0 10px}
+    .card .thumb svg{height:110px}
+    .card h3{font-size:14px}
+    .card .price{font-size:16px}
+    .add{width:36px;height:36px}
+
+    /* consult banner: emoji on top, centered */
+    .duo .consult{padding:30px 22px;align-items:center;text-align:center}
+    .duo .consult .consult-txt{display:flex;flex-direction:column;align-items:center}
+    .duo .consult .doc{position:static;order:-1;font-size:58px;margin:0 0 8px;opacity:1;filter:none}
+    .duo .consult h3{font-size:22px;max-width:100%}
+    .duo .consult p{max-width:100%}
+    .duo .consult .btn{width:100%;justify-content:center}
+    /* partner banner */
+    .partner{padding:30px 22px;gap:24px}
+    .partner h3{font-size:24px}
+    .partner p{font-size:14px}
+    .partner .btn{width:100%;justify-content:center}
+    .perk{padding:14px 16px;gap:12px}
+    .perk .pn{font-size:20px;min-width:58px}
+
+    /* reviews */
+    .review{width:290px;padding:20px}
+
+    /* faq */
+    .faq summary{font-size:15px;padding:16px 18px}
+    .faq .ans{padding:0 18px 18px}
+
+    /* articles → swipe slider */
+    .articles{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;gap:14px;margin:0 -14px;padding:0 14px 6px}
+    .articles::-webkit-scrollbar{display:none}
+    .art{flex:0 0 78%;scroll-snap-align:start}
+    .art .cover{height:150px}
+
+    /* footer → compact, collapsible link groups */
+    .footer .ftop{grid-template-columns:1fr;gap:8px;padding:30px 0 14px}
+    .footer .fabout{max-width:100%}
+    .footer .fcta{flex-wrap:wrap}
+    .footer .fbottom{gap:8px 16px;padding:18px 0 26px;font-size:12px}
+    .footer .ftop>div:first-child{margin-bottom:10px}
+    .footer .facc h5{display:flex;align-items:center;justify-content:space-between;cursor:pointer;margin:0;padding:15px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+    .footer .facc h5::after{content:"+";font-size:20px;font-weight:400;color:var(--muted);line-height:1}
+    .footer .facc.open h5{border-bottom:0;margin-bottom:12px}
+    .footer .facc.open h5::after{content:"–"}
+    .footer .facc ul{display:none;padding-bottom:6px}
+    .footer .facc.open ul{display:flex}
+    .footer .fcontact{padding-top:16px}
+
+    /* switcher */
+    .switcher{bottom:12px;padding:5px;gap:3px;max-width:calc(100vw - 20px)}
+    .switcher .lab{display:none}
+    .switcher button{padding:8px 14px;font-size:12.5px}
+
+    /* ---------- PDP: swipe gallery, no thumbnails ---------- */
+    .crumbs{display:none}
+    .pdp{gap:20px}
+    .gallery{display:block}
+    .gallery .thumbs,.gallery .stage{display:none}
+    .mgal{display:block}
+    .rich-toggle{display:inline-flex}
+    .rich-more{display:none}
+    .rich.open .rich-more{display:block}
+    .pinfo h1{font-size:25px}
+    .price-lg{font-size:28px;margin-bottom:18px}
+    .buy-row{flex-wrap:wrap}
+    .btn-buy{flex:1 1 140px}
+    /* features block hidden on mobile */
+    .feat{display:none}
+    .tabs{gap:20px;overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch}
+    .tabs::-webkit-scrollbar{display:none}
+    .tabs .tab{flex:0 0 auto;font-size:15px}
+    .certs{grid-template-columns:repeat(2,1fr)}
+    .rev-summary{flex-wrap:wrap}
+    .rev-summary .btn-ghost{margin-left:0!important}
+  }
+
+  /* ================= SMALL PHONES (≤430px) ================= */
+  @media(max-width:430px){
+    .sec-head h2{font-size:19px}
+    .hero h1{font-size:24px}
+    .prod-grid{grid-template-columns:repeat(2,1fr);gap:10px}
+    .card .thumb{height:104px}
+    .card .thumb svg{height:96px}
+    .promo-sm .emoji{font-size:40px}
+    .del-2{grid-template-columns:1fr}
+    .effects{grid-template-columns:1fr}
+    .certs{grid-template-columns:1fr}
+    .hact{gap:16px}
+  }
+</style>
+
+<div class="site">
+
+  <!-- ============================ HOME ============================ -->
+  <div class="page on" id="home">
+    <div data-shell></div>
+
+    <div class="wrap">
+      <!-- hero (no badges) -->
+      <section class="section">
+        <div class="hero">
+          <div class="hero-txt">
+            <div class="kicker">Пептиды премиум-качества</div>
+            <h1>Пептиды для красоты и здоровья</h1>
+            <p>Высококачественные пептиды с чистотой более 98%</p>
+            <button class="btn">Перейти в каталог <span class="arr"><svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button>
+          </div>
+          <div class="podium">
+            <svg viewBox="0 0 190 300" style="height:96%">
+              <ellipse cx="95" cy="286" rx="72" ry="12" fill="rgba(0,0,0,.08)"/>
+              <rect x="30" y="250" width="130" height="30" rx="6" fill="#DEE1E5"/>
+              <rect x="62" y="30" width="66" height="24" rx="4" fill="#C9CDD2"/>
+              <rect x="66" y="14" width="58" height="20" rx="4" fill="#B7BCC2"/>
+              <path d="M60 54 h70 v168 a20 20 0 01-20 20 H80 a20 20 0 01-20-20 Z" fill="#fff" stroke="#E4E7EB"/>
+              <rect x="60" y="120" width="70" height="86" fill="#1D1D1F"/>
+              <text x="95" y="150" text-anchor="middle" fill="#fff" font-size="16" font-weight="800">NAD+</text>
+              <rect x="72" y="162" width="46" height="16" rx="3" fill="#F26522"/>
+              <text x="95" y="174" text-anchor="middle" fill="#fff" font-size="9" font-weight="700">50 mg</text>
+            </svg>
+          </div>
+          <div class="dots"><span class="on"></span><span></span><span></span></div>
+        </div>
+      </section>
+
+      <!-- stats points (each in its own card) -->
+      <section class="section">
+        <div class="stats stats-split">
+          <div class="stat"><svg class="si" viewBox="0 0 24 24"><circle cx="12" cy="9" r="5"/><path d="M9 13l-2 8 5-3 5 3-2-8"/></svg><div><b>10+ лет</b><span>на рынке</span></div></div>
+          <div class="stat"><svg class="si" viewBox="0 0 24 24"><circle cx="9" cy="9" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5"/><circle cx="17" cy="9" r="2.5"/><path d="M15 15c3 0 6 1.5 6 5"/></svg><div><b>30 000+</b><span>довольных клиентов</span></div></div>
+          <div class="stat"><svg class="si" viewBox="0 0 24 24"><path d="M3 13h13V6H3zM16 8h4l2 3v4h-6z"/><circle cx="7" cy="17" r="2"/><circle cx="18" cy="17" r="2"/></svg><div><b>Быстрая доставка</b><span>по РФ</span></div></div>
+          <div class="stat"><svg class="si" viewBox="0 0 24 24"><path d="M4 8l8-4 8 4-8 4z"/><path d="M4 8v8l8 4 8-4V8"/></svg><div><b>500+</b><span>позиций в каталоге</span></div></div>
+        </div>
+      </section>
+
+      <!-- exclusive + side blocks -->
+      <section class="section" style="padding-top:6px">
+        <div class="promo-grid">
+          <div class="promo-lg promo-excl">
+            <div class="excl-kick"><svg class="ic" viewBox="0 0 24 24" style="width:14px;color:var(--orange);stroke-width:1.8"><path d="M12 3l2.3 4.7 5.2.8-3.8 3.6.9 5.1L12 15l-4.6 2.4.9-5.1L4.5 8.5l5.2-.8z"/></svg> Только у BIOHACKER</div>
+            <h3>Эксклюзив</h3>
+            <p>Редкие ноотропы, пептиды и добавки, которые есть в наличии только у Биохакера.</p>
+            <a class="link">Смотреть все →</a>
+            <div class="brain"><svg viewBox="0 0 230 200" fill="none">
+              <circle cx="115" cy="100" r="78" fill="rgba(242,101,34,.08)"/>
+              <g fill="#F26522" opacity=".85"><circle cx="90" cy="80" r="4"/><circle cx="120" cy="70" r="4"/><circle cx="140" cy="95" r="4"/><circle cx="100" cy="118" r="4"/><circle cx="132" cy="126" r="4"/></g>
+              <g stroke="#F26522" stroke-width="1.4" opacity=".55"><path d="M90 80l30-10M120 70l20 25M140 95l-8 31M100 118l32 8M100 118l-10-38"/></g>
+            </svg></div>
+          </div>
+          <div class="promo-col">
+            <div class="promo-sm"><h4>Ноотропы нового поколения</h4><p>Фокус. Память. Мышление. На максимум.</p><a class="link">Смотреть все →</a><span class="emoji">🧠</span></div>
+            <div class="promo-sm"><h4>Грибы для иммунитета и энергии</h4><p>Сила природы для вашего здоровья</p><a class="link">Смотреть все →</a><span class="emoji">🍄</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- trust -->
+      <section class="section" style="padding-top:0"><div data-trust></div></section>
+
+      <!-- recommended (2 rows) -->
+      <section class="section">
+        <div class="sec-head">
+          <h2>Рекомендуемые товары</h2>
+          <div style="display:flex;align-items:center;gap:18px">
+            <a class="see-all">Смотреть все</a>
+            <div class="carousel-ctrl">
+              <button><svg class="ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button>
+              <button><svg class="ic" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
+            </div>
+          </div>
+        </div>
+        <div class="prod-grid" id="rec-home"></div>
+      </section>
+
+      <!-- consultation + partner (one row) -->
+      <section class="section">
+        <div class="duo">
+          <div class="consult">
+            <div class="consult-txt">
+              <h3>Персональная консультация эксперта</h3>
+              <p>Подберем оптимальные решения под ваши цели и поможем достичь максимального результата - бесплатно.</p>
+              <button class="btn">Получить консультацию <span class="arr"><svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button>
+            </div>
+            <span class="doc">🧑‍⚕️</span>
+          </div>
+          <div class="partner">
+            <div>
+              <div class="kick">Партнерская программа</div>
+              <h3>Станьте партнером BIOHACKER</h3>
+              <p>Рекомендуйте продукцию и получайте доход с заказов ваших клиентов - не только с первого, но и со всех последующих. Прозрачные условия, удобный личный кабинет и поддержка на каждом этапе.</p>
+              <button class="btn">Заполнить анкету <span class="arr"><svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button>
+            </div>
+            <div class="perks">
+              <div class="perk"><span class="pn">до 15%</span><span class="pt"><b>Вознаграждение</b>с заказов ваших клиентов</span></div>
+              <div class="perk"><span class="pn">24/7</span><span class="pt"><b>Личный кабинет</b>статистика и выплаты онлайн</span></div>
+              <div class="perk"><span class="pn">100+</span><span class="pt"><b>Материалов для обучения</b>гайды, промо и поддержка</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- reviews infinite slider -->
+      <section class="section">
+        <div class="sec-head"><h2>Отзывы клиентов</h2><a class="see-all">Все отзывы</a></div>
+        <div class="reviews-mask"><div class="reviews-track" id="reviews"></div></div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="section">
+        <div class="sec-head" style="justify-content:center"><h2>Частые вопросы</h2></div>
+        <div class="faq" id="faq"></div>
+      </section>
+
+      <!-- articles -->
+      <section class="section">
+        <div class="sec-head"><h2>Статьи и гайды</h2><a class="see-all">Все статьи <svg class="ic" viewBox="0 0 24 24" style="width:15px"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+        <div class="articles">
+          <a class="art"><div class="cover" style="background:linear-gradient(130deg,#EEF1F4,#E1E5EA)"><span class="atag">Пептиды</span>🧬</div><div class="abody"><div class="adate">12 июля 2026</div><h4>NAD+ и продление молодости: что показывают исследования</h4><span class="aread">Читать →</span></div></a>
+          <a class="art"><div class="cover" style="background:linear-gradient(130deg,#F0EEF4,#E4E1EA)"><span class="atag">Ноотропы</span>🧠</div><div class="abody"><div class="adate">8 июля 2026</div><h4>Ноотропы для фокуса: с чего начать новичку</h4><span class="aread">Читать →</span></div></a>
+          <a class="art"><div class="cover" style="background:linear-gradient(130deg,#EEF3EF,#E0E9E2)"><span class="atag">Грибы</span>🍄</div><div class="abody"><div class="adate">2 июля 2026</div><h4>Lion’s Mane: как грибы влияют на мозг и нервы</h4><span class="aread">Читать →</span></div></a>
+        </div>
+      </section>
+
+    </div><!-- /wrap -->
+
+    <div data-footer></div>
+  </div><!-- /home -->
+
+
+  <!-- ============================ PRODUCT ============================ -->
+  <div class="page" id="product">
+    <div data-shell></div>
+
+    <div class="wrap">
+      <div class="crumbs"><a>Главная</a><span class="sep">/</span><a>Ноотропы</a><span class="sep">/</span><a>Спортивное питание</a><span class="sep">/</span><span class="cur">BAM-15 60 капсул</span></div>
+
+      <div class="pdp">
+        <div class="gallery">
+          <div class="thumbs">
+            <div class="th on">%%BAM%%</div><div class="th">%%BAMFLAT%%</div><div class="th">%%BOX%%</div><div class="th">%%CAPS%%</div><div class="th">%%DOC%%</div>
+            <div class="more"><svg class="ic" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
+          </div>
+          <div class="stage">
+            <svg class="mol" viewBox="0 0 400 440" fill="none" stroke="#D3D7DC" stroke-width="1.4">
+              <circle cx="70" cy="90" r="5"/><circle cx="120" cy="60" r="5"/><circle cx="150" cy="120" r="5"/><circle cx="330" cy="150" r="5"/><circle cx="360" cy="220" r="5"/><circle cx="300" cy="90" r="5"/><circle cx="80" cy="330" r="5"/><circle cx="140" cy="380" r="5"/>
+              <path d="M70 90l50-30M120 60l30 60M330 150l30 70M330 150l-30-60M80 330l60 50"/>
+            </svg>
+            %%BAMBIG%%
+          </div>
+        </div>
+
+        <div class="pinfo">
+          <div class="tags"><span class="tag mg">30 mg</span><span class="tag stock">● В наличии</span></div>
+          <h1>BAM-15 <small>60 капсул</small></h1>
+          <div class="meta-row"><span>Артикул: BAM_60c</span><span>0 отзывов</span><span class="stars">★★★★★</span></div>
+          <div class="price-lg">5 900 ₽</div>
+          <div class="buy-row">
+            <div class="qty"><button>−</button><input value="1"><button>+</button></div>
+            <button class="btn btn-buy"><svg class="ic" viewBox="0 0 24 24" style="color:#fff"><path d="M6 6h15l-1.5 9h-12z"/><path d="M6 6L5 3H2"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/></svg> В корзину</button>
+            <button class="icon-btn"><svg class="ic" viewBox="0 0 24 24"><path d="M12 20s-7-4.3-9.2-8.6C1.3 8.3 3 5 6.2 5 8 5 9.4 6 12 8.5 14.6 6 16 5 17.8 5 21 5 22.7 8.3 21.2 11.4 19 15.7 12 20 12 20z"/></svg></button>
+          </div>
+          <button class="btn btn-1click">Купить в 1 клик</button>
+          <div class="consult-box"><span class="ava">🧑‍⚕️</span><div class="ct"><b>Нужна консультация?</b><span>Наши специалисты помогут подобрать оптимальный курс</span></div><span class="go2"><svg class="ic" viewBox="0 0 24 24" style="stroke-width:2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
+          <div class="del-2">
+            <div class="del"><svg class="ic" viewBox="0 0 24 24"><path d="M3 13h13V6H3zM16 8h4l2 3v4h-6z"/><circle cx="7" cy="17" r="2"/><circle cx="18" cy="17" r="2"/></svg><div><b>Доставка по всей России</b><span>1–3 дня</span></div></div>
+            <div class="del"><svg class="ic" viewBox="0 0 24 24"><path d="M5 5h14v10H9l-4 3z"/></svg><div><b>Бесплатная консультация</b><span>специалистов</span></div></div>
+            <div class="del"><svg class="ic" viewBox="0 0 24 24"><path d="M4 8l8-4 8 4-8 4z"/><path d="M4 8v8l8 4 8-4V8"/></svg><div><b>Анонимная упаковка</b><span>100% конфиденциально</span></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="feat">
+        <div class="f"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3c3 3 4 5 4 8a4 4 0 01-8 0c0-1 .5-2 1-3 .5 2 2 2 2 0 0-2-1-3 1-5z"/></svg><span>Ускоряет метаболизм</span></div>
+        <div class="f"><svg class="ic" viewBox="0 0 24 24"><circle cx="8" cy="8" r="2.5"/><circle cx="16" cy="16" r="2.5"/><path d="M6 18L18 6"/></svg><span>Сжигание жировых запасов</span></div>
+        <div class="f"><svg class="ic" viewBox="0 0 24 24"><path d="M13 3L5 13h6l-2 8 8-10h-6z"/></svg><span>Повышает расход энергии</span></div>
+        <div class="f"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="9" width="14" height="9" rx="4.5" transform="rotate(-45 10 13)"/><path d="M9 9l6 6"/></svg><span>1 капсула в день</span></div>
+        <div class="f"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg><span>Контроль качества HPLC</span></div>
+      </div>
+
+      <div class="tabs">
+        <button class="tab on" data-tab="0">Описание</button>
+        <button class="tab" data-tab="1">Применение</button>
+        <button class="tab" data-tab="2">Доставка и оплата</button>
+        <button class="tab" data-tab="3">Отзывы</button>
+        <button class="tab" data-tab="4">Сертификаты</button>
+      </div>
+      <div class="tab-panels">
+
+        <div class="tab-panel on" data-tab="0"><div class="rich">
+          <p class="lead">BAM-15 - современный митохондриальный активатор, который мягко ускоряет обмен веществ и помогает телу расходовать больше энергии в состоянии покоя. Один из немногих компонентов, работающих на уровне клеточной энергетики.</p>
+          <div class="warn"><span style="font-size:18px">⚠️</span><div><b>Предупреждение:</b> не является лекарственным средством или БАД. Информация носит справочный характер и не предназначена для диагностики, лечения или профилактики заболеваний. Перед применением проконсультируйтесь со специалистом.</div></div>
+          <h3>Как работает</h3>
+          <p>Вещество усиливает термогенез в митохондриях: клетки тратят больше калорий на выработку тепла вместо того, чтобы запасать их в виде жира. При этом сохраняется мышечная масса и стабильный уровень энергии в течение дня - без стимуляторов и скачков пульса.</p>
+          <h3>Основные эффекты</h3>
+          <div class="effects">
+            <div class="effect"><b>Ускорение метаболизма</b><span>Рост базового расхода энергии</span></div>
+            <div class="effect"><b>Снижение жировой массы</b><span>Тело использует жир как топливо</span></div>
+            <div class="effect"><b>Чувствительность к инсулину</b><span>Улучшение углеводного обмена</span></div>
+            <div class="effect"><b>Сохранение мышц</b><span>Расход идет за счет жира, а не мышц</span></div>
+          </div>
+          <h3>Кому подходит</h3>
+          <ul class="ticks">
+            <li>Тем, кто хочет снизить процент жира без жестких диет</li>
+            <li>На этапе сушки и рекомпозиции тела</li>
+            <li>При замедленном обмене веществ и низкой энергии</li>
+          </ul>
+          <h3>Характеристики</h3>
+          <div class="spec">
+            <div class="srow"><span>Чистота</span><b>99% (HPLC)</b></div>
+            <div class="srow"><span>Форма выпуска</span><b>Капсулы, 60 шт.</b></div>
+            <div class="srow"><span>Дозировка</span><b>30 мг</b></div>
+            <div class="srow"><span>Прием</span><b>1 капсула в день</b></div>
+            <div class="srow"><span>Хранение</span><b>Сухое место, +2…+8 °C</b></div>
+          </div>
+        </div></div>
+
+        <div class="tab-panel" data-tab="1"><div class="rich">
+          <h3>Схема приема</h3>
+          <p>По 1 капсуле в день во время еды, запивая водой. Рекомендуемая продолжительность курса - 8-12 недель. Не превышайте указанную дозировку.</p>
+          <h3>Рекомендации</h3>
+          <ul class="ticks">
+            <li>Принимайте в первой половине дня для ровной энергии</li>
+            <li>Поддерживайте питьевой режим и достаточный сон</li>
+            <li>Сочетайте с умеренным дефицитом калорий для лучшего результата</li>
+          </ul>
+          <div class="warn"><span style="font-size:18px">💬</span><div>Перед началом курса рекомендуем бесплатную консультацию специалиста - в Telegram, WhatsApp или по телефону. Поможем подобрать оптимальную схему под ваши цели.</div></div>
+        </div></div>
+
+        <div class="tab-panel" data-tab="2"><div class="rich">
+          <h3>Доставка</h3>
+          <p>Отправляем по всей России за 1-3 дня в анонимной упаковке 100% конфиденциально. Доступны курьерские службы, пункты выдачи и почта. Соблюдаем температурный режим при транспортировке.</p>
+          <h3>Оплата</h3>
+          <ul class="ticks">
+            <li>Банковские карты (Visa, Mastercard, МИР)</li>
+            <li>Система быстрых платежей (СБП)</li>
+            <li>Наличными при получении</li>
+          </ul>
+        </div></div>
+
+        <div class="tab-panel" data-tab="3"><div class="rich">
+          <div class="rev-summary"><span class="rs-num">4.9</span><div><div style="color:#FBB040;letter-spacing:2px">★★★★★</div><span style="font-size:13px;color:var(--muted)">На основе 12 отзывов</span></div><button class="btn btn-ghost" style="margin-left:auto">Написать отзыв</button></div>
+          <div id="prod-reviews" class="reviews-col"></div>
+        </div></div>
+
+        <div class="tab-panel" data-tab="4"><div class="rich">
+          <p class="lead">Каждая партия сопровождается протоколом контроля качества. Чистота подтверждается методом HPLC и составляет 99%.</p>
+          <div class="certs" id="certs"></div>
+        </div></div>
+
+      </div>
+
+      <section class="section">
+        <div class="sec-head"><h2>Рекомендуемые товары</h2>
+          <div class="carousel-ctrl">
+            <button><svg class="ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button>
+            <button><svg class="ic" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
+          </div>
+        </div>
+        <div class="prod-grid" id="rec-prod"></div>
+      </section>
+    </div><!-- /wrap -->
+
+    <div data-footer></div>
+  </div><!-- /product -->
+</div><!-- /site -->
+
+<div class="switcher">
+  <span class="lab">Прототип BIOHACKER</span>
+  <button class="on" data-p="home">Главная</button>
+  <button data-p="product">Карточка товара</button>
+</div>
+
+<script>
+/* ---------- shared shell: top bar + header + nav ---------- */
+var TG='<svg viewBox="0 0 24 24"><path d="M21.9 4.3l-3 14.2c-.2 1-.8 1.2-1.7.8l-4.6-3.4-2.2 2.1c-.3.3-.5.5-1 .5l.3-4.8 8.8-8c.4-.3-.1-.5-.6-.2L6.9 13 2.4 11.6c-1-.3-1-1 .2-1.4l17-6.6c.8-.3 1.5.2 1.3 1z"/></svg>';
+var WA='<svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 00-8.6 15L2 22l5.2-1.4A10 10 0 1012 2zm5.3 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-1.7-.1-2.8-.9-4.6-3.7-4.7-3.9-.1-.2-1.1-1.5-1.1-2.8 0-1.3.7-2 .9-2.2.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.7 1.8c.1.2 0 .4-.1.5l-.4.5c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.2.1.4 0 .5-.1l.7-.8c.2-.2.3-.2.6-.1l1.6.8c.3.1.5.2.5.4z"/></svg>';
+
+var CATALOG=[
+  {name:'Похудение',cols:[
+    {h:'Пептиды',items:['BAM-15','Semaglutide','Tirzepatide','Retatrutide','5-Amino-1MQ','AOD-9604']},
+    {h:'Жиросжигатели',items:['L-Carnitine','Berberine','Yohimbine','Synephrine']},
+    {h:'Комплексы',items:['Fat Burner Complex','Metabolic Support','Аппетит-контроль']}
+  ]},
+  {name:'Здоровье и восстановление',cols:[
+    {h:'Пептиды',items:['BPC-157','TB-500','GHK-Cu','KPV','ARA-290']},
+    {h:'Митохондрии',items:['NAD+','NMN','CoQ10','PQQ']},
+    {h:'Иммунитет',items:['Thymosin Alpha-1','LL-37','Витамин D3+K2']}
+  ]},
+  {name:'Для работы мозга',cols:[
+    {h:'Ноотропы',items:['Semax','Selank','Noopept','Alpha GPC','Phenylpiracetam']},
+    {h:'Грибы',items:['Lion’s Mane','Cordyceps','Reishi']},
+    {h:'Аминокислоты',items:['L-Theanine','L-Tyrosine','Citicoline']}
+  ]},
+  {name:'Афродизиаки',cols:[
+    {h:'Пептиды',items:['PT-141 (Bremelanotide)','Kisspeptin-10','Melanotan II']},
+    {h:'Добавки',items:['Maca','Tribulus','Icariin','L-Arginine']}
+  ]},
+  {name:'Рост мышечной массы',cols:[
+    {h:'Пептиды роста',items:['Ipamorelin','CJC-1295','GHRP-6','MK-677','Hexarelin']},
+    {h:'Спортивное питание',items:['Creatine','Whey Protein','BCAA','Beta-Alanine']},
+    {h:'Восстановление',items:['BPC-157','TB-500','Glutamine']}
+  ]},
+  {name:'От стресса',cols:[
+    {h:'Пептиды',items:['Selank','Semax']},
+    {h:'Адаптогены',items:['Ashwagandha','Rhodiola','L-Theanine']},
+    {h:'Сон и релакс',items:['Melatonin','Glycine','Magnesium','GABA']}
+  ]},
+  {name:'Красота и молодость',cols:[
+    {h:'Пептиды',items:['GHK-Cu','Epitalon','SNAP-8','Argireline']},
+    {h:'Anti-age',items:['NMN','Resveratrol','Astaxanthin']},
+    {h:'Коллаген',items:['Collagen Peptides','Hyaluronic Acid','Биотин']}
+  ]}
+];
+var CHEV='<svg class="ic" viewBox="0 0 24 24" style="width:15px;stroke-width:1.8"><path d="M9 6l6 6-6 6"/></svg>';
+var megaRail=CATALOG.map(function(g,i){return `<a class="mega-cat${i===0?' on':''}" data-idx="${i}">${g.name}${CHEV}</a>`;}).join('');
+var megaBody=CATALOG.map(function(g,i){
+  var items=g.cols.reduce(function(a,c){return a.concat(c.items);},[]);
+  return `<div class="mega-panel${i===0?' on':''}" data-idx="${i}"><ul class="mega-list">`+items.map(function(it){return `<li><a>${it}</a></li>`;}).join('')+`</ul></div>`;
+}).join('');
+var MEGA=`<div class="mega"><div class="mega-inner"><div class="mega-rail">${megaRail}</div><div class="mega-body">${megaBody}</div></div><div class="mega-foot"><a>Весь каталог</a><a>Новинки</a><a>Акции</a></div></div>`;
+
+/* mobile off-canvas: catalog accordion (native details) + sections */
+var MLINKS=['Эксклюзив','Ноотропы','Пептиды','Спортивное питание','Витамины и минералы','Курсы','Блог'];
+var mnavCats=CATALOG.map(function(g){
+  var items=g.cols.reduce(function(a,c){return a.concat(c.items);},[]);
+  return `<details class="mcat"><summary>${g.name}${CHEV}</summary><ul>`+items.map(function(it){return `<li><a>${it}</a></li>`;}).join('')+`</ul></details>`;
+}).join('');
+var MNAV=`
+  <div class="mnav-ov"></div>
+  <aside class="mnav">
+    <div class="mnav-head">
+      <div class="logo"><span class="b">BIO</span><span class="h">HACKER</span></div>
+      <button class="mnav-close" aria-label="Закрыть"><svg class="ic" viewBox="0 0 24 24" style="width:22px;stroke-width:2"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <div class="mnav-body">
+      <a class="mnav-phone"><b>+7 (977) 520-97-00</b><span>Бесплатная консультация специалистов</span></a>
+      <div class="mnav-lab">Каталог</div>
+      <div class="mnav-cats">${mnavCats}</div>
+      <div class="mnav-lab">Разделы</div>
+      <nav class="mnav-links">${MLINKS.map(function(l){return `<a>${l}</a>`;}).join('')}</nav>
+      <div class="mnav-socs"><a class="soc" title="Telegram">${TG}</a><a class="soc" title="WhatsApp">${WA}</a></div>
+    </div>
+  </aside>`;
+
+var SHELL = `
+  <div class="topbar"><div class="wrap">
+    <span class="tb-item"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="9" r="5"/><path d="M9 13l-2 8 5-3 5 3-2-8"/></svg> 10 лет работы</span>
+    <span class="tb-item"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg> Проверенное качество</span>
+    <span class="tb-item"><svg class="ic" viewBox="0 0 24 24"><path d="M9 3v6l-4 8a2 2 0 002 3h10a2 2 0 002-3l-4-8V3"/><path d="M8 3h8M8 15h8"/></svg> Чистота состава 99% HPLC</span>
+    <span class="spacer"></span>
+    <div class="tb-contact">
+      <div class="tb-ph">
+        <span class="phone">+7 (977) 520-97-00</span>
+        <span class="free">Бесплатная консультация</span>
+      </div>
+      <div class="tb-socs">
+        <a class="soc" title="Telegram">${TG}</a>
+        <a class="soc" title="WhatsApp">${WA}</a>
+      </div>
+    </div>
+  </div></div>
+  <header class="header"><div class="wrap">
+    <button class="burger" aria-label="Меню"><svg class="ic" viewBox="0 0 24 24" style="width:24px;stroke-width:1.8"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    <div class="logo"><span class="b">BIO</span><span class="h">HACKER</span></div>
+    <div class="catalog-wrap">
+      <button class="catalog-btn"><span class="bars"><span></span><span></span><span></span></span> Каталог</button>
+      ${MEGA}
+    </div>
+    <div class="search"><input placeholder="Поиск по товарам"><span class="go"><svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></span></div>
+    <div class="hact">
+      <span class="loc"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21c5-5 7-8 7-11a7 7 0 10-14 0c0 3 2 6 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg> Москва <svg class="ic" viewBox="0 0 24 24" style="width:13px;color:var(--ink)"><path d="M6 9l6 6 6-6"/></svg></span>
+      <a class="hbtn"><svg class="ic" viewBox="0 0 24 24"><path d="M12 20s-7-4.3-9.2-8.6C1.3 8.3 3 5 6.2 5 8 5 9.4 6 12 8.5 14.6 6 16 5 17.8 5 21 5 22.7 8.3 21.2 11.4 19 15.7 12 20 12 20z"/></svg> Избранное</a>
+      <a class="hbtn"><span class="badge">2</span><svg class="ic" viewBox="0 0 24 24"><path d="M6 6h15l-1.5 9h-12z"/><path d="M6 6L5 3H2"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/></svg> Корзина</a>
+      <a class="hbtn"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg> Войти</a>
+    </div>
+  </div></header>
+  <nav class="nav"><div class="wrap">
+    <a>Эксклюзив</a><a>Ноотропы</a><a>Пептиды</a><a>Спортивное питание</a><a>Витамины и минералы</a><a>Курсы</a><a>Блог</a>
+  </div></nav>${MNAV}`;
+
+var TRUST = `<div class="trust">
+  <div class="t"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg> Проверенные поставщики</div>
+  <div class="t"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 13h13V6H3zM16 8h4l2 3v4h-6z"/><circle cx="7" cy="17" r="2"/><circle cx="18" cy="17" r="2"/></svg> Быстрая доставка по всей России</div>
+  <div class="t"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3a2 2 0 012 2v9a4 4 0 11-4 0V5a2 2 0 012-2z"/><circle cx="12" cy="17" r="1.6" fill="currentColor"/></svg> Соблюдение температурного режима</div>
+  <div class="t"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 5h14v10H9l-4 3z"/></svg> Бесплатная консультация специалистов</div>
+  <div class="t"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 8l8-4 8 4-8 4z"/><path d="M4 8v8l8 4 8-4V8"/><path d="M12 12v8"/></svg> Анонимная упаковка</div>
+</div>`;
+
+var FOOTER = `<footer class="footer">
+  <div class="wrap ftop">
+    <div>
+      <div class="logo"><span class="b">BIO</span><span class="h">HACKER</span></div>
+      <p class="fabout">Магазин пептидов, ноотропов, грибов и спортивного питания премиум-качества. Проверенные поставщики и чистота состава 99% по HPLC.</p>
+      <div class="fsoc"><a class="tg" title="Telegram">${TG}</a><a class="wa" title="WhatsApp">${WA}</a><a title="VK"><svg viewBox="0 0 24 24"><path d="M13 18c-6 0-9.5-4.2-9.7-11.1H6c.1 5.1 2.4 7.2 4.2 7.7V6.9h3v4.6c1.8-.2 3.6-2.2 4.2-4.6h3c-.5 3-2.5 5-3.9 5.7 1.4.6 3.7 2.3 4.6 5.4h-3.3c-.7-2.2-2.3-3.9-4.6-4.1V18z"/></svg></a></div>
+    </div>
+    <div><h5>Каталог</h5><ul><li><a>Ноотропы</a></li><li><a>Пептиды</a></li><li><a>Спортивное питание</a></li><li><a>Витамины и минералы</a></li><li><a>Курсы</a></li></ul></div>
+    <div><h5>Информация</h5><ul><li><a>О компании</a></li><li><a>Доставка и оплата</a></li><li><a>Блог</a></li><li><a>Партнерская программа</a></li><li><a>Контакты</a></li></ul></div>
+    <div class="fcontact">
+      <h5>Контакты</h5>
+      <div class="cphone">+7 (977) 520-97-00</div>
+      <div class="cfree">Бесплатная консультация специалистов</div>
+      <div class="cmail">info@biohacker3.ru</div>
+      <div class="fcta"><a class="tg">${TG} Telegram</a><a class="wa">${WA} WhatsApp</a></div>
+    </div>
+  </div>
+  <div class="wrap fbottom"><span>© 2026 BIOHACKER. Все права защищены.</span><a>Политика конфиденциальности</a><a>Публичная оферта</a><span class="sep"></span><span>Оплата: карты · СБП · наличные</span></div>
+  <div class="wrap fdisc">Товары не являются лекарственными средствами или БАД. Информация на сайте носит справочный характер и не предназначена для диагностики, лечения или профилактики заболеваний. Перед применением проконсультируйтесь со специалистом.</div>
+</footer>`;
+
+document.querySelectorAll('[data-shell]').forEach(function(el){el.outerHTML=SHELL});
+document.querySelectorAll('[data-trust]').forEach(function(el){el.outerHTML=TRUST});
+document.querySelectorAll('[data-footer]').forEach(function(el){el.outerHTML=FOOTER});
+
+/* ---------- product art ---------- */
+function vial(){return `<svg viewBox="0 0 120 150"><ellipse cx="60" cy="143" rx="34" ry="6" fill="rgba(0,0,0,.07)"/><rect x="46" y="6" width="28" height="14" rx="3" fill="#C7CBD0"/><rect x="42" y="18" width="36" height="10" rx="2" fill="#B4B9BF"/><path d="M40 28h40v96a12 12 0 01-12 12H52a12 12 0 01-12-12Z" fill="#fff" stroke="#E4E7EB"/><rect x="40" y="70" width="40" height="44" fill="#1D1D1F"/><text x="60" y="90" text-anchor="middle" fill="#fff" font-size="11" font-weight="800">NAD+</text><rect x="48" y="96" width="24" height="10" rx="2" fill="#F26522"/><text x="60" y="104" text-anchor="middle" fill="#fff" font-size="6" font-weight="700">50 mg</text></svg>`;}
+function jar(label,color,sub){return `<svg viewBox="0 0 120 150"><ellipse cx="60" cy="143" rx="36" ry="6" fill="rgba(0,0,0,.07)"/><rect x="36" y="8" width="48" height="16" rx="3" fill="#2A2A2E"/><rect x="30" y="24" width="60" height="116" rx="12" fill="#fff" stroke="#E4E7EB"/><rect x="30" y="52" width="60" height="70" fill="${color}"/><text x="60" y="86" text-anchor="middle" fill="#fff" font-size="13" font-weight="800">${label}</text><rect x="42" y="94" width="36" height="12" rx="2" fill="#F26522"/><text x="60" y="103" text-anchor="middle" fill="#fff" font-size="6.5" font-weight="700">${sub}</text></svg>`;}
+function blueJar(){return `<svg viewBox="0 0 120 150"><ellipse cx="60" cy="143" rx="34" ry="6" fill="rgba(0,0,0,.07)"/><rect x="40" y="8" width="40" height="14" rx="3" fill="#5A6470"/><rect x="32" y="22" width="56" height="118" rx="12" fill="#F3F6FA" stroke="#E4E7EB"/><rect x="36" y="44" width="48" height="74" rx="4" fill="#fff" stroke="#DCE2EA"/><text x="60" y="70" text-anchor="middle" fill="#1E4C86" font-size="11" font-weight="800">Epitalon</text><text x="60" y="84" text-anchor="middle" fill="#7C93AD" font-size="6">10 mg / 60 caps</text><rect x="44" y="94" width="32" height="10" rx="2" fill="#2E6DB4"/></svg>`;}
+
+var PRODUCTS=[
+  {flag:'hit',art:vial(),cat:'Пептиды',name:'NAD+ 500mg',rate:'4.9',rev:'28',price:'7 900 ₽'},
+  {flag:'new',art:blueJar(),cat:'Пептиды',name:'Epitalon 10mg',rate:'4.8',rev:'16',price:'от 12 000 ₽'},
+  {flag:'',art:jar('5-Amino','#111','1MQ'),cat:'Пептиды',name:'5-Amino-1MQ',rate:'4.7',rev:'11',price:'8 500 ₽'},
+  {flag:'',art:jar('Lion’s','#141414','MANE'),cat:'Грибы',name:'Lion’s Mane 500mg',rate:'4.9',rev:'32',price:'2 900 ₽'},
+  {flag:'',art:jar('ALPHA','#171717','GPC'),cat:'Ноотропы',name:'Alpha GPC 300mg',rate:'4.8',rev:'23',price:'2 600 ₽'},
+  {flag:'hit',art:jar('SEMAX','#1B1B1F','30mg'),cat:'Пептиды',name:'Semax 30mg',rate:'4.9',rev:'41',price:'3 400 ₽'},
+  {flag:'',art:jar('CORDY','#3E2A17','ceps'),cat:'Грибы',name:'Cordyceps 500mg',rate:'4.7',rev:'19',price:'2 200 ₽'},
+  {flag:'new',art:jar('BERB','#5C3B00','500'),cat:'Витамины',name:'Berberine 500mg',rate:'4.8',rev:'27',price:'1 800 ₽'},
+  {flag:'',art:jar('CREA','#17324E','300g'),cat:'Спортпит',name:'Creatine 300g',rate:'4.9',rev:'54',price:'1 500 ₽'},
+  {flag:'',art:jar('MELA','#2C2350','5mg'),cat:'Витамины',name:'Melatonin 5mg',rate:'4.8',rev:'36',price:'890 ₽'}
+];
+function star(){return '<svg class="ic" viewBox="0 0 24 24" style="fill:#FBB040;stroke:none;width:14px;height:14px"><path d="M12 3l2.5 5 5.5.8-4 3.9 1 5.4L12 15.6 7.5 18l1-5.4-4-3.9L10 8z"/></svg>';}
+function heart(){return '<svg class="ic" viewBox="0 0 24 24" style="width:19px;height:19px;fill:none;stroke:currentColor"><path d="M12 20s-7-4.3-9.2-8.6C1.3 8.3 3 5 6.2 5 8 5 9.4 6 12 8.5 14.6 6 16 5 17.8 5 21 5 22.7 8.3 21.2 11.4 19 15.7 12 20 12 20z"/></svg>';}
+function cartIc(){return '<svg class="ic" viewBox="0 0 24 24" style="color:#fff"><path d="M6 6h15l-1.5 9h-12z"/><path d="M6 6L5 3H2"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/></svg>';}
+function cardHTML(p){
+  var flag=p.flag==='hit'?'<span class="flag hit">Хит</span>':p.flag==='new'?'<span class="flag new">New</span>':'';
+  return `<div class="card">${flag}<span class="fav">${heart()}</span><div class="thumb">${p.art}</div><div class="cat-tag">${p.cat}</div><h3>${p.name}</h3><div class="rate">${star()} ${p.rate} (${p.rev})</div><div class="foot"><div class="price">${p.price}</div><button class="add">${cartIc()}</button></div></div>`;
+}
+
+/* ---------- reviews ---------- */
+var REVIEWS=[
+  {t:'Заказываю уже второй год. Качество стабильное, приходит всегда в срок и в аккуратной упаковке.',n:'Артур',c:'Москва'},
+  {t:'Консультант помог собрать курс под мои задачи. Реально работает, чувствую разницу в энергии.',n:'Елена',c:'Санкт-Петербург'},
+  {t:'Брал ноотропы для концентрации. Эффект заметил примерно через неделю, буду заказывать еще.',n:'Дмитрий',c:'Казань'},
+  {t:'Нравится, что на все есть сертификаты и чистота по HPLC. Магазину доверяю полностью.',n:'Сергей',c:'Екатеринбург'},
+  {t:'Отличный сервис и адекватные цены. Доставка по РФ быстрая, все пришло герметично.',n:'Ольга',c:'Новосибирск'},
+  {t:'Пептиды топ, поддержка на связи в WhatsApp почти круглосуточно. Рекомендую от души.',n:'Игорь',c:'Краснодар'}
+];
+function reviewHTML(r){
+  return `<div class="review"><div class="rstars">★★★★★</div><div class="rtext">${r.t}</div><div class="rauthor"><span class="rav">${r.n[0]}</span><div><div class="rname">${r.n}</div><div class="rmeta">${r.c} <span class="v">· проверенная покупка</span></div></div></div></div>`;
+}
+
+/* ---------- FAQ ---------- */
+var FAQ=[
+  ['Как оформить заказ?','Добавьте товары в корзину и перейдите к оформлению, либо нажмите «Купить в 1 клик» - менеджер свяжется с вами для подтверждения. Также можно заказать через Telegram или WhatsApp.'],
+  ['Какие сроки и стоимость доставки?','Доставляем по всей России за 1–3 дня. Отправляем в анонимной упаковке транспортными компаниями и почтой. Точную стоимость менеджер рассчитает при подтверждении заказа.'],
+  ['Как вы контролируете качество и чистоту?','Работаем только с проверенными поставщиками. Каждая партия сопровождается сертификатами, чистота состава подтверждается методом HPLC и составляет 99%.'],
+  ['Ваши товары - это лекарства или БАД?','Нет. Товары не являются лекарственными средствами или БАД. Информация на сайте носит справочный характер. Перед применением проконсультируйтесь со специалистом.'],
+  ['Как получить консультацию специалиста?','Консультация бесплатна. Напишите нам в Telegram или WhatsApp, позвоните по телефону или оставьте заявку - специалист поможет подобрать оптимальный курс.'],
+  ['Как работает партнерская программа?','Приведите клиента один раз - он закрепляется за вами навсегда. Вы получаете до 15% с каждого его заказа, доступ к личному кабинету 24/7 и 100+ обучающих материалов.']
+];
+function faqHTML(f){return `<details><summary>${f[0]}<span class="pm">+</span></summary><div class="ans">${f[1]}</div></details>`;}
+
+document.getElementById('rec-home').innerHTML=PRODUCTS.map(cardHTML).join('');
+document.getElementById('reviews').innerHTML=(REVIEWS.map(reviewHTML).join(''))+ (REVIEWS.map(reviewHTML).join(''));
+document.getElementById('faq').innerHTML=FAQ.map(faqHTML).join('');
+
+/* ---------- product page gallery placeholders ---------- */
+function pdpArt(){return `<svg class="main" viewBox="0 0 150 300"><ellipse cx="75" cy="288" rx="60" ry="10" fill="rgba(0,0,0,.06)"/><rect x="30" y="255" width="90" height="26" rx="6" fill="#E6E9ED"/><rect x="45" y="18" width="60" height="20" rx="4" fill="#2A2A2E"/><rect x="30" y="38" width="90" height="210" rx="16" fill="#fff" stroke="#E4E7EB"/><rect x="30" y="96" width="90" height="120" fill="#E8342B"/><rect x="30" y="96" width="90" height="30" fill="#fff"/><text x="75" y="116" text-anchor="middle" fill="#1D8A4E" font-size="9" font-weight="800">NOOLECT</text><text x="75" y="165" text-anchor="middle" fill="#fff" font-size="26" font-weight="800">BAM-15</text><g fill="#fff" font-size="5"><text x="46" y="185">Increases sensitivity to insulin</text><text x="46" y="194">Improves energy levels</text><text x="46" y="203">Decreases fat and increases lean mass</text><text x="46" y="212">Reduces fat turn mass</text></g></svg>`;}
+var IMG_BAM='<svg viewBox="0 0 60 78"><rect x="14" y="6" width="32" height="8" rx="2" fill="#2A2A2E"/><rect x="10" y="14" width="40" height="58" rx="6" fill="#fff" stroke="#E4E7EB"/><rect x="10" y="34" width="40" height="30" fill="#E8342B"/><text x="30" y="52" text-anchor="middle" fill="#fff" font-size="10" font-weight="800">BAM</text></svg>';
+var IMG_FLAT='<svg viewBox="0 0 60 78"><rect x="8" y="24" width="44" height="34" rx="5" fill="#E8342B"/><text x="30" y="45" text-anchor="middle" fill="#fff" font-size="9" font-weight="800">BAM15</text></svg>';
+var IMG_BOX='<svg viewBox="0 0 60 78"><rect x="12" y="16" width="36" height="46" rx="4" fill="#F1F3F6" stroke="#DCE0E5"/><rect x="12" y="30" width="36" height="14" fill="#E8342B"/></svg>';
+var IMG_CAPS='<svg viewBox="0 0 60 78"><rect x="14" y="30" width="24" height="10" rx="5" fill="#D9DDE2" transform="rotate(30 26 35)"/><rect x="24" y="40" width="24" height="10" rx="5" fill="#C7CCD2" transform="rotate(30 36 45)"/></svg>';
+var IMG_DOC='<svg viewBox="0 0 60 78"><rect x="16" y="14" width="28" height="50" rx="3" fill="#F1F3F6" stroke="#DCE0E5"/><g stroke="#C7CCD2" stroke-width="2"><path d="M22 26h16M22 32h16M22 38h10"/></g></svg>';
+var pEl=document.getElementById('product');
+pEl.innerHTML=pEl.innerHTML
+  .replace('%%BAMBIG%%',pdpArt())
+  .replace('%%BAM%%',IMG_BAM).replace('%%BAMFLAT%%',IMG_FLAT)
+  .replace('%%BOX%%',IMG_BOX).replace('%%CAPS%%',IMG_CAPS).replace('%%DOC%%',IMG_DOC);
+document.getElementById('rec-prod').innerHTML=PRODUCTS.slice(0,5).map(cardHTML).join('');
+
+/* mobile swipe gallery: replaces thumbnails; dots + crumbs on photo */
+(function(){
+  var gal=document.querySelector('#product .gallery');if(!gal)return;
+  var SL=[pdpArt(),IMG_BOX,IMG_CAPS,IMG_DOC];
+  var mgal='<div class="mgal"><div class="mgal-track">'
+    +SL.map(function(s){return '<div class="mgal-slide">'+s+'</div>';}).join('')
+    +'</div><div class="mgal-crumbs"><a>Ноотропы</a> / BAM-15</div><div class="mgal-dots">'
+    +SL.map(function(_,i){return '<span'+(i===0?' class="on"':'')+'></span>';}).join('')
+    +'</div></div>';
+  gal.insertAdjacentHTML('afterbegin',mgal);
+  var track=gal.querySelector('.mgal-track'),dots=gal.querySelectorAll('.mgal-dots span');
+  track.addEventListener('scroll',function(){
+    var i=Math.round(track.scrollLeft/track.clientWidth);
+    dots.forEach(function(d,k){d.classList.toggle('on',k===i);});
+  },{passive:true});
+})();
+
+/* collapse description after "Как работает" on mobile */
+(function(){
+  var rich=document.querySelector('#product .tab-panel[data-tab="0"] .rich');if(!rich)return;
+  var kids=[].slice.call(rich.children);
+  var idx=-1;for(var i=0;i<kids.length;i++){if(kids[i].tagName==='H3'&&/Основные эффекты/.test(kids[i].textContent)){idx=i;break;}}
+  if(idx<0)return;
+  var more=document.createElement('div');more.className='rich-more';
+  var btn=document.createElement('button');btn.className='rich-toggle';
+  btn.innerHTML='Показать полностью <svg class="ic" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>';
+  rich.insertBefore(btn,kids[idx]);rich.insertBefore(more,kids[idx]);
+  for(var j=idx;j<kids.length;j++)more.appendChild(kids[j]);
+  btn.addEventListener('click',function(){
+    var open=rich.classList.toggle('open');
+    btn.childNodes[0].nodeValue=open?'Свернуть ':'Показать полностью ';
+  });
+})();
+
+/* ---------- certificates + product reviews ---------- */
+function certDoc(){return `<svg viewBox="0 0 120 150"><rect x="14" y="8" width="92" height="134" rx="6" fill="#fff" stroke="#E4E7EB"/><rect x="28" y="22" width="50" height="8" rx="2" fill="#E1E4E8"/><rect x="28" y="38" width="64" height="5" rx="2" fill="#EDEFF2"/><rect x="28" y="48" width="64" height="5" rx="2" fill="#EDEFF2"/><polyline points="28,98 44,74 56,88 70,60 84,82 92,68" fill="none" stroke="#F26522" stroke-width="2"/><line x1="28" y1="106" x2="92" y2="106" stroke="#E1E4E8"/><circle cx="86" cy="124" r="13" fill="none" stroke="#2E9E5B" stroke-width="2"/><path d="M80 124l4 4 8-8" stroke="#2E9E5B" stroke-width="2" fill="none"/></svg>`;}
+var CERTS=[['Сертификат HPLC','Чистота 99%'],['Протокол анализа','Партия BAM_60c'],['Сертификат качества','Соответствие GMP'],['Паспорт продукта','Состав и хранение']];
+document.getElementById('certs').innerHTML=CERTS.map(function(c){return `<div class="cert"><div class="cert-doc">${certDoc()}</div><div class="cert-cap"><b>${c[0]}</b><span>${c[1]}</span></div></div>`;}).join('');
+document.getElementById('prod-reviews').innerHTML=REVIEWS.slice(0,3).map(reviewHTML).join('');
+
+/* ---------- switcher + tabs ---------- */
+document.querySelectorAll('.switcher button').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.querySelectorAll('.switcher button').forEach(x=>x.classList.remove('on'));
+    document.querySelectorAll('.page').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');document.getElementById(b.dataset.p).classList.add('on');window.scrollTo(0,0);
+  });
+});
+document.addEventListener('click',function(e){
+  var t=e.target.closest('.tabs .tab');if(!t)return;
+  var tabs=t.parentNode,idx=t.dataset.tab;
+  tabs.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));t.classList.add('on');
+  tabs.parentNode.querySelectorAll('.tab-panel').forEach(function(p){p.classList.toggle('on',p.dataset.tab===idx);});
+});
+/* mobile burger off-canvas */
+function closeMnav(){
+  document.querySelectorAll('.mnav.open').forEach(x=>x.classList.remove('open'));
+  document.querySelectorAll('.mnav-ov.show').forEach(x=>x.classList.remove('show'));
+  document.body.style.overflow='';
+}
+document.addEventListener('click',function(e){
+  var b=e.target.closest('.burger');
+  if(b){var pg=b.closest('.page');pg.querySelector('.mnav').classList.add('open');pg.querySelector('.mnav-ov').classList.add('show');document.body.style.overflow='hidden';return;}
+  if(e.target.closest('.mnav-close')||e.target.closest('.mnav-ov')){closeMnav();return;}
+  if(e.target.closest('.mnav-links a')||e.target.closest('.mnav-cats ul a')){closeMnav();}
+});
+/* stat + trust points → duplicate items for seamless infinite marquee */
+['.stats-split','.trust'].forEach(function(sel){
+  document.querySelectorAll(sel).forEach(function(box){
+    if(box.querySelector('.mq'))return;
+    var mq=document.createElement('div');mq.className='mq';
+    var kids=[].slice.call(box.children);
+    kids.forEach(function(k){mq.appendChild(k);});
+    kids.forEach(function(k){var d=k.cloneNode(true);d.classList.add('mq-dup');mq.appendChild(d);});
+    box.appendChild(mq);
+  });
+});
+/* footer link groups → accordions on mobile */
+document.querySelectorAll('.footer .ftop>div').forEach(function(col){
+  var h=col.querySelector('h5'),list=col.querySelector('ul');
+  if(!h||!list)return;
+  col.classList.add('facc');
+  h.addEventListener('click',function(){
+    if(window.matchMedia('(max-width:768px)').matches)col.classList.toggle('open');
+  });
+});
+/* catalog dropdown */
+document.addEventListener('click',function(e){
+  var btn=e.target.closest('.catalog-btn');
+  if(btn){var w=btn.closest('.catalog-wrap'),open=w.classList.contains('open');
+    document.querySelectorAll('.catalog-wrap.open').forEach(x=>x.classList.remove('open'));
+    if(!open)w.classList.add('open');return;}
+  if(e.target.closest('.mega-sub a')||e.target.closest('.mega-foot a')||!e.target.closest('.mega'))
+    document.querySelectorAll('.catalog-wrap.open').forEach(x=>x.classList.remove('open'));
+});
+function megaSwitch(c){
+  var mega=c.closest('.mega'),idx=c.dataset.idx;
+  mega.querySelectorAll('.mega-cat').forEach(x=>x.classList.toggle('on',x===c));
+  mega.querySelectorAll('.mega-panel').forEach(p=>p.classList.toggle('on',p.dataset.idx===idx));
+}
+document.addEventListener('mouseover',function(e){
+  var c=e.target.closest('.mega-cat');if(c)megaSwitch(c);
+});
+/* touch: tapping a category switches its panel (no hover on mobile) */
+document.addEventListener('click',function(e){
+  var c=e.target.closest('.mega-cat');if(c)megaSwitch(c);
+});
+</script>
+</body>
+</html>
