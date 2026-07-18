@@ -151,9 +151,8 @@
   .promo-sm .emoji{position:absolute;right:22px;top:50%;transform:translateY(-50%);font-size:64px;opacity:.9}
 
   /* ---------- trust bar ---------- */
-  .trust{display:grid;grid-template-columns:repeat(5,1fr);background:var(--soft-2);border:1px solid var(--line-2);border-radius:var(--radius);overflow:hidden}
+  .trust{display:block;background:var(--soft-2);border:1px solid var(--line-2);border-radius:var(--radius);overflow:hidden}
   .trust .t{display:flex;align-items:center;gap:12px;padding:20px 22px;font-size:12.5px;color:#4A4F55;line-height:1.25;border-right:1px solid var(--line-2)}
-  .trust .t:last-child{border-right:0}
   .trust .t .ic{width:26px;height:26px;color:var(--muted);flex:none;stroke-width:1.4}
 
   /* ---------- product cards ---------- */
@@ -403,9 +402,13 @@
   .rich.open .rich-toggle .ic{transform:rotate(180deg)}
 
   /* infinite marquee for stat/trust points (activated on mobile) */
-  .stats-split .mq,.trust .mq{display:contents}
-  .mq-dup{display:none}
-  .trust .mq>.t:nth-of-type(5){border-right:0}
+  .stats-split .mq{display:contents}
+  .stats-split .mq-dup{display:none}
+  /* trust bar = infinite auto-marquee on all widths */
+  .trust .mq{display:flex;width:max-content;animation:mq-run 45s linear infinite}
+  .trust .mq .t{flex:0 0 244px;border-bottom:0}
+  .trust .mq-dup{display:flex}
+  .trust:hover .mq{animation-play-state:paused}
   @keyframes mq-run{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
   .page{display:none} .page.on{display:block}
@@ -413,8 +416,6 @@
   @media(max-width:1000px){
     .cats{grid-template-columns:repeat(4,1fr)}
     .prod-grid{grid-template-columns:repeat(2,1fr)}
-    .trust{grid-template-columns:repeat(2,1fr)}
-    .trust .t{border-bottom:1px solid var(--line-2)}
     .stats{grid-template-columns:repeat(2,1fr)}
     .promo-grid,.split,.pdp,.partner,.articles{grid-template-columns:1fr}
     .feat{grid-template-columns:repeat(2,1fr)}
@@ -466,11 +467,10 @@
     .stat .si{width:36px;height:36px}
     .stat b{font-size:19px}
 
-    /* trust points → infinite auto-marquee (inside rounded mask) */
-    .trust{display:block;overflow:hidden}
-    .trust .mq{display:flex;width:max-content;animation:mq-run 30s linear infinite}
-    .trust .mq .t{flex:0 0 208px;border-right:1px solid var(--line-2);border-bottom:0}
-    .mq-dup{display:flex}
+    /* trust marquee: faster + narrower cards on mobile */
+    .trust .mq{animation-duration:30s}
+    .trust .mq .t{flex:0 0 208px}
+    .stats-split .mq-dup{display:flex}
 
     /* promo banners → stacked, art centered in flow */
     .promo-grid{gap:14px}
