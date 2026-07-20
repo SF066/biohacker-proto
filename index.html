@@ -36,22 +36,21 @@
 
   /* ---------- top utility bar ---------- */
   .topbar{background:var(--soft-2);border-bottom:1px solid var(--line-2);font-size:12.5px;color:#6B7178}
-  .topbar .wrap{display:flex;align-items:center;gap:18px;height:62px}
-  .topbar .tb-div{width:1px;height:26px;background:var(--line-2)}
-  .topbar .tb-item{display:flex;align-items:center;gap:8px;white-space:nowrap}
-  .topbar .tb-item .ic{color:#9AA0A7}
+  .topbar .wrap{display:flex;align-items:center;gap:20px;height:48px}
   .topbar .spacer{flex:1}
-  .topbar .tb-info{color:#6B7178}
-  .topbar .tb-info b{color:var(--ink);font-weight:600}
-  .topbar a.tb-info:hover b{color:var(--orange)}
-  .topbar .free{color:var(--ink);font-weight:600}
-  .topbar .phone{color:var(--ink);font-weight:800;letter-spacing:.2px;white-space:nowrap}
-  .tb-contact{display:flex;flex-direction:column;align-items:center;gap:5px;line-height:1.15}
-  .tb-contact .free{color:var(--ink);font-size:13.5px;font-weight:700;letter-spacing:.1px;white-space:nowrap}
-  .tb-row{display:flex;align-items:center;gap:10px}
-  .tb-row .phone{color:var(--ink);font-weight:800;letter-spacing:.2px;font-size:13px}
-  .tb-row .phone:hover{color:var(--orange)}
-  .tb-socs{display:flex;gap:6px}
+  /* регион: единственный элемент-кнопка в полосе */
+  .tb-loc{display:flex;align-items:center;gap:6px;font:inherit;font-size:13px;font-weight:600;color:var(--ink);background:none;border:0;padding:0;cursor:pointer;white-space:nowrap}
+  .tb-loc .ic{width:16px;height:16px;color:var(--orange)}
+  .tb-loc .chev{width:13px;height:13px;color:#9AA0A7}
+  .tb-loc:hover{color:var(--orange)}
+  .topbar .tb-item{display:flex;align-items:center;gap:8px;white-space:nowrap;color:#6B7178}
+  .topbar .tb-item .ic{color:#9AA0A7}
+  a.tb-item:hover{color:var(--orange)}
+  a.tb-item:hover .ic{color:var(--orange)}
+  .tb-consult{color:#8A9098;white-space:nowrap}
+  .tb-phone{color:var(--ink);font-weight:800;font-size:15px;letter-spacing:.2px;white-space:nowrap;margin-left:-8px}
+  .tb-phone:hover{color:var(--orange)}
+  .tb-socs{display:flex;gap:6px;margin-left:2px}
   .topbar .soc{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;background:var(--orange);transition:transform .15s ease,background .15s ease}
   .topbar .soc:hover{background:var(--orange-d);transform:translateY(-1px)}
   .topbar .soc svg{width:15px;height:15px;fill:currentColor;stroke:none}
@@ -375,7 +374,9 @@
   .mnav-phone b{font-size:17px;font-weight:800}
   .mnav-phone span{font-size:12px;color:var(--muted);margin-top:2px}
   .mnav-info{display:flex;flex-direction:column;gap:8px;margin-top:10px;font-size:13px;color:var(--muted)}
-  .mnav-info a,.mnav-info span{display:flex;align-items:center;gap:8px}
+  .mnav-info a,.mnav-info span,.mnav-info button{display:flex;align-items:center;gap:8px;font:inherit;background:none;border:0;padding:0;text-align:left;color:inherit}
+  .mnav-loc{cursor:pointer}
+  .mnav-loc .ic{color:var(--orange)!important}
   .mnav-info b{color:var(--ink);font-weight:600}
   .mnav-info .ic{width:16px;height:16px;color:#9AA0A7;flex:none}
   .mnav-lab{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-2);margin:20px 0 4px;padding-left:2px}
@@ -935,6 +936,7 @@ var MNAV=`
     <div class="mnav-body">
       <a class="mnav-phone"><b>+7 (977) 520-97-00</b><span>Бесплатная консультация специалистов</span></a>
       <div class="mnav-info">
+        <button class="mnav-loc"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21c5-5 7-8 7-11a7 7 0 10-14 0c0 3 2 6 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Регион: <b>Москва</b></button>
         <span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>График работы: <b>Пн-пт 9:00-19:00</b></span>
         <a href="mailto:ankebiorus@gmail.com"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 7l8.5 6 8.5-6"/></svg><b>ankebiorus@gmail.com</b></a>
       </div>
@@ -948,19 +950,15 @@ var MNAV=`
 
 var SHELL = `
   <div class="topbar"><div class="wrap">
-    <span class="tb-item tb-info tb-hours"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg> График работы: <b>Пн-пт 9:00-19:00</b></span>
+    <button class="tb-loc"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21c5-5 7-8 7-11a7 7 0 10-14 0c0 3 2 6 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg> Москва <svg class="ic chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
+    <span class="tb-item tb-hours"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg> Пн-пт 9:00-19:00</span>
+    <a class="tb-item tb-mail" href="mailto:ankebiorus@gmail.com"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 7l8.5 6 8.5-6"/></svg> ankebiorus@gmail.com</a>
     <span class="spacer"></span>
-    <a class="tb-item tb-info tb-mail" href="mailto:ankebiorus@gmail.com"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 7l8.5 6 8.5-6"/></svg> <b>ankebiorus@gmail.com</b></a>
-    <span class="tb-div"></span>
-    <div class="tb-contact">
-      <span class="free">Бесплатная консультация</span>
-      <div class="tb-row">
-        <a class="phone" href="tel:+79775209700">+7 (977) 520-97-00</a>
-        <div class="tb-socs">
-          <a class="soc" title="Telegram">${TG}</a>
-          <a class="soc" title="WhatsApp">${WA}</a>
-        </div>
-      </div>
+    <span class="tb-consult">Бесплатная консультация</span>
+    <a class="tb-phone" href="tel:+79775209700">+7 (977) 520-97-00</a>
+    <div class="tb-socs">
+      <a class="soc" title="Telegram">${TG}</a>
+      <a class="soc" title="WhatsApp">${WA}</a>
     </div>
   </div></div>
   <header class="header"><div class="wrap">
@@ -972,7 +970,6 @@ var SHELL = `
     </div>
     <div class="search"><input placeholder="Поиск по товарам"><span class="go"><svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></span></div>
     <div class="hact">
-      <span class="loc"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21c5-5 7-8 7-11a7 7 0 10-14 0c0 3 2 6 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg> Москва <svg class="ic" viewBox="0 0 24 24" style="width:13px;color:var(--ink)"><path d="M6 9l6 6 6-6"/></svg></span>
       <a class="hbtn"><svg class="ic" viewBox="0 0 24 24"><path d="M12 20s-7-4.3-9.2-8.6C1.3 8.3 3 5 6.2 5 8 5 9.4 6 12 8.5 14.6 6 16 5 17.8 5 21 5 22.7 8.3 21.2 11.4 19 15.7 12 20 12 20z"/></svg> Избранное</a>
       <a class="hbtn"><span class="badge">2</span><svg class="ic" viewBox="0 0 24 24"><path d="M6 6h15l-1.5 9h-12z"/><path d="M6 6L5 3H2"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/></svg> Корзина</a>
       <a class="hbtn"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg> Войти</a>
