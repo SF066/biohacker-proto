@@ -453,11 +453,11 @@
     .topbar{font-size:12px}
     .topbar .wrap{height:auto;flex-wrap:wrap;gap:8px 10px;padding-top:10px;padding-bottom:10px}
     .topbar .tb-hours{display:none}
-    .tb-loc{order:1;align-self:flex-start}
-    .topbar .spacer{display:none}
-    .tb-stack{display:flex;flex-direction:column;gap:6px;order:2;margin-left:auto}
+    .tb-loc{order:1}
+    .tb-stack{display:flex;flex-direction:column;gap:6px;order:2}
+    .topbar .spacer{order:3}
     .topbar .tb-mail{display:flex}
-    .tb-contact{order:3;width:100%}
+    .tb-contact{order:4}
     .tb-loc{font-size:12.5px}
     .tb-consult{font-size:12px}
     .tb-contact{gap:8px}
@@ -591,6 +591,12 @@
     .certs{grid-template-columns:repeat(2,1fr)}
     .rev-summary{flex-wrap:wrap}
     .rev-summary .btn-ghost{margin-left:0!important}
+  }
+
+  /* узкие экраны: три группы в ряд уже не помещаются, консультация уходит строкой ниже */
+  @media(max-width:520px){
+    .topbar .spacer{display:none}
+    .tb-contact{width:100%}
   }
 
   /* ================= SMALL PHONES (≤430px) ================= */
