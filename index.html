@@ -36,7 +36,7 @@
 
   /* ---------- top utility bar ---------- */
   .topbar{background:var(--soft-2);border-bottom:1px solid var(--line-2);font-size:12.5px;color:#6B7178}
-  .topbar .wrap{display:flex;align-items:center;gap:20px;height:48px}
+  .topbar .wrap{display:flex;align-items:center;gap:20px;height:62px}
   .topbar .spacer{flex:1}
   /* регион: единственный элемент-кнопка в полосе */
   .tb-loc{display:flex;align-items:center;gap:6px;font:inherit;font-size:13px;font-weight:600;color:var(--ink);background:none;border:0;padding:0;cursor:pointer;white-space:nowrap}
@@ -47,10 +47,16 @@
   .topbar .tb-item .ic{color:#9AA0A7}
   a.tb-item:hover{color:var(--orange)}
   a.tb-item:hover .ic{color:var(--orange)}
-  .tb-consult{color:var(--ink);font-size:14px;font-weight:700;letter-spacing:.1px;white-space:nowrap}
+  .tb-consult{color:var(--ink);font-size:13px;font-weight:700;letter-spacing:.1px;white-space:nowrap}
   .topbar .tb-phone{letter-spacing:.2px}
-  .tb-contact{display:flex;align-items:center;gap:10px}
+  .tb-contact{display:flex;flex-direction:column;align-items:flex-end;gap:5px;line-height:1.1}
   .tb-socs{display:flex;gap:6px}
+  /* кнопки «Спросить» в мессенджерах */
+  .topbar .ask{display:flex;align-items:center;gap:6px;height:26px;padding:0 10px;border-radius:8px;font-size:12px;font-weight:600;color:#fff;background:var(--orange);white-space:nowrap;transition:background .15s ease,transform .15s ease}
+  .topbar .ask:hover{background:var(--orange-d);transform:translateY(-1px)}
+  .topbar .ask svg{width:14px;height:14px;fill:currentColor;stroke:none;flex:none}
+  .topbar .ask.wa{background:#3EAE4B}
+  .topbar .ask.wa:hover{background:#349540}
   .topbar .soc{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;background:var(--orange);transition:transform .15s ease,background .15s ease}
   .topbar .soc:hover{background:var(--orange-d);transform:translateY(-1px)}
   .topbar .soc svg{width:15px;height:15px;fill:currentColor;stroke:none}
@@ -444,7 +450,14 @@
     .sec-head h2{font-size:21px}
 
     /* hide desktop chrome, show burger + off-canvas */
-    .topbar{display:none}
+    /* topbar остается, но сжимается: регион + мессенджеры (часы/почта/телефон живут в бургере) */
+    .topbar{font-size:12px}
+    .topbar .wrap{height:56px;gap:10px}
+    .topbar .tb-hours,.topbar .tb-mail,.topbar .tb-phone{display:none}
+    .tb-loc{font-size:12.5px}
+    .tb-consult{font-size:12px}
+    .tb-contact{gap:8px}
+    .topbar .ask{height:24px;padding:0 9px;font-size:11.5px}
     .nav{display:none}
     .catalog-wrap{display:none}
     .burger{display:flex}
@@ -956,10 +969,10 @@ var SHELL = `
     <a class="tb-item tb-phone" href="tel:+79775209700"><svg class="ic" viewBox="0 0 24 24"><path d="M6.5 4h3l1.5 4-2 1.5a12 12 0 005.5 5.5L16 13l4 1.5v3a2 2 0 01-2.2 2A15.5 15.5 0 014.5 6.2 2 2 0 016.5 4z"/></svg> +7 (977) 520-97-00</a>
     <span class="spacer"></span>
     <div class="tb-contact">
-      <span class="tb-consult">Бесплатная консультация:</span>
+      <span class="tb-consult">Бесплатная консультация</span>
       <div class="tb-socs">
-        <a class="soc" title="Telegram">${TG}</a>
-        <a class="soc" title="WhatsApp">${WA}</a>
+        <a class="ask" title="Telegram">Спросить ${TG}</a>
+        <a class="ask wa" title="WhatsApp">Спросить ${WA}</a>
       </div>
     </div>
   </div></div>
