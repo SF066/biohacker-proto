@@ -49,14 +49,12 @@
   a.tb-item:hover .ic{color:var(--orange)}
   .tb-consult{color:var(--ink);font-size:13px;font-weight:700;letter-spacing:.1px;white-space:nowrap}
   .topbar .tb-phone{letter-spacing:.2px}
-  .tb-contact{display:flex;flex-direction:column;align-items:flex-end;gap:5px;line-height:1.1}
+  .tb-contact{display:flex;flex-direction:column;align-items:center;gap:5px;line-height:1.1}
   .tb-socs{display:flex;gap:6px}
   /* кнопки «Спросить» в мессенджерах */
   .topbar .ask{display:flex;align-items:center;gap:6px;height:26px;padding:0 10px;border-radius:8px;font-size:12px;font-weight:600;color:#fff;background:var(--orange);white-space:nowrap;transition:background .15s ease,transform .15s ease}
   .topbar .ask:hover{background:var(--orange-d);transform:translateY(-1px)}
   .topbar .ask svg{width:14px;height:14px;fill:currentColor;stroke:none;flex:none}
-  .topbar .ask.wa{background:#3EAE4B}
-  .topbar .ask.wa:hover{background:#349540}
   .topbar .soc{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;background:var(--orange);transition:transform .15s ease,background .15s ease}
   .topbar .soc:hover{background:var(--orange-d);transform:translateY(-1px)}
   .topbar .soc svg{width:15px;height:15px;fill:currentColor;stroke:none}
@@ -452,8 +450,13 @@
     /* hide desktop chrome, show burger + off-canvas */
     /* topbar остается, но сжимается: регион + мессенджеры (часы/почта/телефон живут в бургере) */
     .topbar{font-size:12px}
-    .topbar .wrap{height:56px;gap:10px}
-    .topbar .tb-hours,.topbar .tb-mail,.topbar .tb-phone{display:none}
+    .topbar .wrap{height:auto;flex-wrap:wrap;gap:8px 10px;padding-top:10px;padding-bottom:10px}
+    .topbar .tb-hours{display:none}
+    .tb-loc{order:1}
+    .topbar .spacer{order:2}
+    .tb-contact{order:3}
+    .topbar .tb-phone{order:4;width:100%}
+    .topbar .tb-mail{display:flex;order:5;width:100%}
     .tb-loc{font-size:12.5px}
     .tb-consult{font-size:12px}
     .tb-contact{gap:8px}
