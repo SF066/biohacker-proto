@@ -49,7 +49,8 @@
   a.tb-item:hover .ic{color:var(--orange)}
   .tb-consult{color:var(--ink);font-size:14px;font-weight:700;letter-spacing:.1px;white-space:nowrap}
   .topbar .tb-phone{letter-spacing:.2px}
-  .tb-socs{display:flex;gap:6px;margin-left:2px}
+  .tb-contact{display:flex;align-items:center;gap:10px}
+  .tb-socs{display:flex;gap:6px}
   .topbar .soc{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;background:var(--orange);transition:transform .15s ease,background .15s ease}
   .topbar .soc:hover{background:var(--orange-d);transform:translateY(-1px)}
   .topbar .soc svg{width:15px;height:15px;fill:currentColor;stroke:none}
@@ -954,10 +955,12 @@ var SHELL = `
     <a class="tb-item tb-mail" href="mailto:ankebiorus@gmail.com"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 7l8.5 6 8.5-6"/></svg> ankebiorus@gmail.com</a>
     <a class="tb-item tb-phone" href="tel:+79775209700"><svg class="ic" viewBox="0 0 24 24"><path d="M6.5 4h3l1.5 4-2 1.5a12 12 0 005.5 5.5L16 13l4 1.5v3a2 2 0 01-2.2 2A15.5 15.5 0 014.5 6.2 2 2 0 016.5 4z"/></svg> +7 (977) 520-97-00</a>
     <span class="spacer"></span>
-    <span class="tb-consult">Бесплатная консультация</span>
-    <div class="tb-socs">
-      <a class="soc" title="Telegram">${TG}</a>
-      <a class="soc" title="WhatsApp">${WA}</a>
+    <div class="tb-contact">
+      <span class="tb-consult">Бесплатная консультация:</span>
+      <div class="tb-socs">
+        <a class="soc" title="Telegram">${TG}</a>
+        <a class="soc" title="WhatsApp">${WA}</a>
+      </div>
     </div>
   </div></div>
   <header class="header"><div class="wrap">
