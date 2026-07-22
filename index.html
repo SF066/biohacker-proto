@@ -756,10 +756,90 @@
     .page-head h1{font-size:26px}
     .tiers,.wsteps{grid-template-columns:1fr}
     .opt-tiers .ot{flex:1;min-width:0}
-    .cart-item{grid-template-columns:64px 1fr;gap:14px;padding:16px}
-    .cart-item .cthumb{width:64px;height:64px}
+    .cart-item{grid-template-columns:56px 1fr;gap:12px;padding:14px}
+    .cart-item .cthumb{width:56px;height:56px}
     .cart-item .ci-right{grid-column:1/-1;flex-direction:row;justify-content:space-between;align-items:center;width:100%}
     .wcta{padding:28px 20px}
+  }
+
+  /* ============ compact cart items + share ============ */
+  .cart-item{grid-template-columns:60px 1fr auto;gap:14px;padding:13px 16px;margin-bottom:12px}
+  .cart-item .cthumb{width:60px;height:60px;padding:6px}
+  .cart-item .cthumb svg{height:48px}
+  .cart-item .cname{font-size:14.5px}
+  .cart-item .cart-art{margin-top:2px}
+  .cart-item .cprice-1{margin-top:6px;font-size:12.5px}
+  .ci-right{gap:9px}
+  .ci-total{font-size:16px}
+  .qty.sm{height:36px}
+  .qty.sm button{width:32px;font-size:16px}
+  .qty.sm input{width:30px;font-size:13.5px}
+  .ci-rm{font-size:12px}
+  .share-cart{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;height:46px;margin-top:14px;border:1px solid var(--line);border-radius:12px;background:#fff;font-size:14px;font-weight:600;color:#3A3F45;transition:.15s}
+  .share-cart svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.7}
+  .share-cart:hover{border-color:var(--orange);color:var(--orange)}
+
+  /* ============ checkout page ============ */
+  .checkout-grid{display:grid;grid-template-columns:1fr 380px;gap:24px;align-items:start;margin-top:8px}
+  .co-form{display:flex;flex-direction:column;gap:16px;min-width:0}
+  .co-card{border:1px solid var(--line);border-radius:16px;padding:22px 24px}
+  .co-step{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+  .co-num{width:28px;height:28px;border-radius:8px;background:var(--orange);color:#fff;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;flex:none}
+  .co-step h3{margin:0;font-size:17px;font-weight:800}
+  .co-fields{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .ff{display:flex;flex-direction:column;min-width:0}
+  .ff.ff-wide{grid-column:1/-1}
+  .ff label{font-size:12.5px;font-weight:600;color:#3A3F45;margin-bottom:7px}
+  .ff input,.ff textarea{border:1px solid var(--line);border-radius:11px;height:48px;padding:0 14px;font-family:inherit;font-size:14.5px;color:var(--ink);outline:none;background:#fff}
+  .ff textarea{height:auto;padding:12px 14px;resize:vertical;line-height:1.5}
+  .ff input:focus,.ff textarea:focus{border-color:var(--orange)}
+  .ff input::placeholder,.ff textarea::placeholder{color:var(--muted-2)}
+  .co-seg{display:inline-flex;background:var(--soft);border-radius:12px;padding:4px;gap:4px;margin-bottom:18px}
+  .co-seg .seg{padding:9px 22px;border-radius:9px;font-size:14px;font-weight:600;color:#5A6068;transition:.15s}
+  .co-seg .seg.on{background:#fff;color:var(--orange);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+  .co-methods{margin-top:16px}
+  .addr-wrap{position:relative}
+  .addr-list{position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);margin-top:6px;z-index:40;overflow:hidden;display:none}
+  .addr-list.show{display:block}
+  .addr-list a{display:flex;align-items:center;gap:10px;padding:11px 14px;font-size:14px;cursor:pointer;border-bottom:1px solid var(--line-2)}
+  .addr-list a:last-child{border-bottom:0}
+  .addr-list a:hover{background:var(--soft-2);color:var(--orange)}
+  .addr-list a svg{width:16px;height:16px;stroke:var(--muted);fill:none;stroke-width:1.6;flex:none}
+  .addr-list a:hover svg{stroke:var(--orange)}
+  .pickup-note{background:var(--soft-2);border-radius:12px;padding:16px 18px;font-size:13.5px;color:#5A6068;line-height:1.55}
+  .co-summary .co-mini{margin-bottom:14px;border-bottom:1px solid var(--line);padding-bottom:8px}
+  .co-mini .cm{display:flex;justify-content:space-between;gap:12px;font-size:13.5px;padding:7px 0;color:#3A3F45}
+  .co-mini .cm .cm-q{color:var(--muted);font-weight:600}
+  .co-mini .cm b{white-space:nowrap}
+  .co-agree{font-size:12px;color:var(--muted);margin:12px 0 0;line-height:1.5}
+  .co-agree a{color:var(--orange)}
+
+  /* ============ consultation modal ============ */
+  .modal-ov{position:fixed;inset:0;background:rgba(20,22,26,.55);display:none;align-items:center;justify-content:center;z-index:200;padding:20px}
+  .modal-ov.show{display:flex}
+  .modal{background:#fff;border-radius:20px;padding:34px 32px;max-width:420px;width:100%;text-align:center;position:relative;box-shadow:0 30px 70px rgba(0,0,0,.3);animation:pop .18s ease}
+  @keyframes pop{from{transform:translateY(10px) scale(.97);opacity:0}to{transform:none;opacity:1}}
+  .modal-x{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:9px;color:#9AA0A7;font-size:17px;display:flex;align-items:center;justify-content:center}
+  .modal-x:hover{background:var(--soft);color:var(--ink)}
+  .modal-ic{width:64px;height:64px;border-radius:16px;background:#FFF3EC;display:flex;align-items:center;justify-content:center;font-size:34px;margin:0 auto 16px}
+  .modal h3{margin:0 0 10px;font-size:22px;font-weight:800;letter-spacing:-.3px}
+  .modal p{margin:0 0 22px;font-size:14.5px;color:#5A6068;line-height:1.55}
+  .modal-btns{display:flex;flex-direction:column;gap:10px}
+  .modal-btns a{display:flex;align-items:center;justify-content:center;gap:10px;height:52px;border-radius:12px;font-size:15px;font-weight:700;color:#fff;transition:filter .15s,transform .15s}
+  .modal-btns a:hover{filter:brightness(1.05);transform:translateY(-1px)}
+  .modal-btns a svg{width:20px;height:20px;fill:#fff;stroke:none}
+  .modal-btns .tg{background:var(--tg)} .modal-btns .wa{background:var(--wa)}
+
+  @media(max-width:900px){
+    .checkout-grid{grid-template-columns:1fr}
+  }
+  @media(max-width:520px){
+    .co-fields{grid-template-columns:1fr}
+    .co-card{padding:18px 16px}
+    .co-seg{display:flex}
+    .co-seg .seg{flex:1;text-align:center;padding:10px 0}
+    .modal{padding:28px 22px}
+    .modal h3{font-size:20px}
   }
 </style>
 
@@ -954,7 +1034,7 @@
             <button class="icon-btn"><svg class="ic" viewBox="0 0 24 24"><path d="M12 20s-7-4.3-9.2-8.6C1.3 8.3 3 5 6.2 5 8 5 9.4 6 12 8.5 14.6 6 16 5 17.8 5 21 5 22.7 8.3 21.2 11.4 19 15.7 12 20 12 20z"/></svg></button>
           </div>
           <button class="btn btn-1click">Купить в 1 клик</button>
-          <div class="consult-box"><span class="ava">🧑‍⚕️</span><div class="ct"><b>Нужна консультация?</b><span>Наши специалисты помогут подобрать оптимальный курс</span></div><span class="go2"><svg class="ic" viewBox="0 0 24 24" style="stroke-width:2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
+          <div class="consult-box" data-consult style="cursor:pointer"><span class="ava">🧑‍⚕️</span><div class="ct"><b>Нужна консультация?</b><span>Наши специалисты помогут подобрать оптимальный курс</span></div><span class="go2"><svg class="ic" viewBox="0 0 24 24" style="stroke-width:2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
           <div class="del-2">
             <div class="del"><svg class="ic" viewBox="0 0 24 24"><path d="M3 13h13V6H3zM16 8h4l2 3v4h-6z"/><circle cx="7" cy="17" r="2"/><circle cx="18" cy="17" r="2"/></svg><div><b>Доставка по всей России</b><span>1–3 дня</span></div></div>
             <div class="del"><svg class="ic" viewBox="0 0 24 24"><path d="M5 5h14v10H9l-4 3z"/></svg><div><b>Бесплатная консультация</b><span>специалистов</span></div></div>
@@ -1182,13 +1262,9 @@
             <div class="sum-row" id="s-disc-row" style="display:none"><span class="disc">Скидка по промокоду</span><b class="disc" id="s-disc">−0 ₽</b></div>
             <div class="sum-row"><span>Доставка</span><b id="s-ship">—</b></div>
             <div class="sum-row total"><span>К оплате</span><b id="s-total">—</b></div>
-            <button class="btn">Оформить заказ</button>
+            <button class="btn" data-go="checkout">Перейти к оформлению</button>
             <button class="btn btn-1c">Купить в 1 клик</button>
-            <div class="share-row">
-              <button id="share-copy"><svg viewBox="0 0 24 24" style="stroke:currentColor;fill:none;stroke-width:1.7"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg> Ссылка</button>
-              <button id="share-tg"><svg viewBox="0 0 24 24" style="fill:var(--tg)"><path d="M21.9 4.3l-3 14.2c-.2 1-.8 1.2-1.7.8l-4.6-3.4-2.2 2.1c-.3.3-.5.5-1 .5l.3-4.8 8.8-8c.4-.3-.1-.5-.6-.2L6.9 13 2.4 11.6c-1-.3-1-1 .2-1.4l17-6.6c.8-.3 1.5.2 1.3 1z"/></svg> Telegram</button>
-              <button id="share-wa"><svg viewBox="0 0 24 24" style="fill:var(--wa)"><path d="M12 2a10 10 0 00-8.6 15L2 22l5.2-1.4A10 10 0 1012 2zm5.3 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-1.7-.1-2.8-.9-4.6-3.7-4.7-3.9-.1-.2-1.1-1.5-1.1-2.8 0-1.3.7-2 .9-2.2.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.7 1.8c.1.2 0 .4-.1.5l-.4.5c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.2.1.4 0 .5-.1l.7-.8c.2-.2.3-.2.6-.1l1.6.8c.3.1.5.2.5.4z"/></svg> WhatsApp</button>
-            </div>
+            <button class="share-cart" id="share-copy"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg> Поделиться корзиной</button>
           </div>
         </div>
       </section>
@@ -1196,6 +1272,84 @@
 
     <div data-footer></div>
   </div><!-- /cart -->
+
+
+  <!-- ============================ CHECKOUT ============================ -->
+  <div class="page" id="checkout">
+    <div data-shell></div>
+
+    <div class="wrap">
+      <div class="crumbs"><a data-go="home">Главная</a><span class="sep">/</span><a data-go="cart">Корзина</a><span class="sep">/</span><span class="cur">Оформление</span></div>
+
+      <section class="section page-head" style="padding-bottom:4px">
+        <h1>Оформление заказа</h1>
+        <p>Заполните данные - менеджер подтвердит заказ и всё уточнит. Отправляем в анонимной упаковке по всей России.</p>
+      </section>
+
+      <section class="section" style="padding-top:8px">
+        <div class="checkout-grid">
+          <form class="co-form" onsubmit="return false" autocomplete="off">
+            <div class="co-card">
+              <div class="co-step"><span class="co-num">1</span><h3>Контактные данные</h3></div>
+              <div class="co-fields">
+                <div class="ff"><label>Имя</label><input type="text" placeholder="Как к вам обращаться"></div>
+                <div class="ff"><label>Телефон</label><input type="tel" placeholder="+7 (___) ___-__-__"></div>
+                <div class="ff ff-wide"><label>Email</label><input type="email" placeholder="Для чека и статуса заказа"></div>
+              </div>
+            </div>
+
+            <div class="co-card">
+              <div class="co-step"><span class="co-num">2</span><h3>Способ получения</h3></div>
+              <div class="co-seg" id="co-mode">
+                <button type="button" class="seg on" data-mode="delivery">Доставка</button>
+                <button type="button" class="seg" data-mode="pickup">Самовывоз</button>
+              </div>
+              <div id="co-delivery">
+                <div class="co-fields">
+                  <div class="ff"><label>Город</label><div class="city-in" style="height:48px;margin:0"><svg viewBox="0 0 24 24"><path d="M12 21c5-5 7-8 7-11a7 7 0 10-14 0c0 3 2 6 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><select id="co-city"><option>Москва</option><option>Санкт-Петербург</option><option>Город-миллионник</option><option>Другой регион</option></select></div></div>
+                  <div class="ff"><label>Индекс</label><input type="text" inputmode="numeric" placeholder="Например, 101000"></div>
+                  <div class="ff ff-wide addr-wrap"><label>Улица и дом</label><input type="text" id="addr-in" placeholder="Начните вводить адрес - появятся подсказки"><div class="addr-list" id="addr-list"></div></div>
+                  <div class="ff"><label>Квартира / офис</label><input type="text" placeholder="Необязательно"></div>
+                  <div class="ff"><label>Подъезд / этаж</label><input type="text" placeholder="Необязательно"></div>
+                </div>
+                <div class="co-methods"><div class="dm-opts" id="co-dm"></div></div>
+              </div>
+              <div id="co-pickup" style="display:none">
+                <div class="pickup-note">Пункты самовывоза СДЭК и Boxberry в вашем городе - менеджер пришлёт список ближайших после оформления. Обычно заказ готов к выдаче через 2-4 дня. Самовывоз бесплатный.</div>
+              </div>
+            </div>
+
+            <div class="co-card">
+              <div class="co-step"><span class="co-num">3</span><h3>Оплата</h3></div>
+              <div class="dm-opts" id="co-pay">
+                <label class="dm on" data-pay="card"><span class="radio"></span><div><div class="dm-name">Банковская карта</div><div class="dm-sub">Visa, Mastercard, МИР - онлайн</div></div></label>
+                <label class="dm" data-pay="sbp"><span class="radio"></span><div><div class="dm-name">СБП</div><div class="dm-sub">Оплата по QR-коду</div></div></label>
+                <label class="dm" data-pay="cash"><span class="radio"></span><div><div class="dm-name">При получении</div><div class="dm-sub">Наличными или картой курьеру</div></div></label>
+              </div>
+            </div>
+
+            <div class="co-card">
+              <div class="ff ff-wide"><label>Комментарий к заказу</label><textarea rows="3" placeholder="Необязательно - например, удобное время доставки"></textarea></div>
+            </div>
+          </form>
+
+          <div class="summary co-summary">
+            <h3>Ваш заказ</h3>
+            <div id="co-list" class="co-mini"></div>
+            <div class="sum-row"><span>Товары (<span id="co-qty">0</span>)</span><b id="co-goods">—</b></div>
+            <div class="sum-row" id="co-disc-row" style="display:none"><span class="disc">Скидка по промокоду</span><b class="disc" id="co-disc">−0 ₽</b></div>
+            <div class="sum-row"><span>Доставка</span><b id="co-ship">—</b></div>
+            <div class="sum-row total"><span>К оплате</span><b id="co-total">—</b></div>
+            <button class="btn" id="co-confirm">Подтвердить заказ</button>
+            <p class="co-agree">Нажимая кнопку, вы соглашаетесь с <a href="#">условиями обработки персональных данных</a>.</p>
+            <a class="cart-back" data-go="cart"><svg class="ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg> Вернуться в корзину</a>
+          </div>
+        </div>
+      </section>
+    </div><!-- /wrap -->
+
+    <div data-footer></div>
+  </div><!-- /checkout -->
 </div><!-- /site -->
 
 <div class="switcher">
@@ -1204,8 +1358,22 @@
   <button data-p="product">Карточка товара</button>
   <button data-p="wholesale">Оптовые заказы</button>
   <button data-p="cart">Корзина</button>
+  <button data-p="checkout">Оформление</button>
 </div>
 <div class="toast" id="toast"></div>
+
+<div class="modal-ov" id="consult-modal">
+  <div class="modal">
+    <button class="modal-x" data-consult-close aria-label="Закрыть">✕</button>
+    <div class="modal-ic">🧑‍⚕️</div>
+    <h3>Нужна консультация?</h3>
+    <p>Напишите нам в Telegram или WhatsApp - ответим на все ваши вопросы в течение ближайшего времени. Поможем подобрать препарат, дозировку и курс под ваши цели.</p>
+    <div class="modal-btns">
+      <a class="tg" href="https://t.me/biohacker" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M21.9 4.3l-3 14.2c-.2 1-.8 1.2-1.7.8l-4.6-3.4-2.2 2.1c-.3.3-.5.5-1 .5l.3-4.8 8.8-8c.4-.3-.1-.5-.6-.2L6.9 13 2.4 11.6c-1-.3-1-1 .2-1.4l17-6.6c.8-.3 1.5.2 1.3 1z"/></svg> Написать в Telegram</a>
+      <a class="wa" href="https://wa.me/79775209700" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 00-8.6 15L2 22l5.2-1.4A10 10 0 1012 2zm5.3 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-1.7-.1-2.8-.9-4.6-3.7-4.7-3.9-.1-.2-1.1-1.5-1.1-2.8 0-1.3.7-2 .9-2.2.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.7 1.8c.1.2 0 .4-.1.5l-.4.5c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.2.1.4 0 .5-.1l.7-.8c.2-.2.3-.2.6-.1l1.6.8c.3.1.5.2.5.4z"/></svg> Написать в WhatsApp</a>
+    </div>
+  </div>
+</div>
 
 <script>
 /* ---------- shared shell: top bar + header + nav ---------- */
@@ -1562,7 +1730,7 @@ function toast(t){var el=document.getElementById('toast');if(!el)return;el.textC
   calc();
 })();
 
-/* ---------- cart page ---------- */
+/* ---------- cart + checkout ---------- */
 (function(){
   var listEl=document.getElementById('cart-list');if(!listEl)return;
   var CART=[
@@ -1582,15 +1750,23 @@ function toast(t){var el=document.getElementById('toast');if(!el)return;el.textC
     'Другой регион':{sur:120,days:['3-5 дней','3-5 дней','5-9 дней']}
   };
   var PROMOS={'SLIM15':15,'BIO10':10};
-  var selMethod='pvz', promo=null;
+  var selMethod='pvz', selCity='Москва', selMode='delivery', selPay='card', promo=null;
 
   function goods(){return CART.reduce(function(s,i){return s+i.price*i.qty;},0);}
   function qtyTotal(){return CART.reduce(function(s,i){return s+i.qty;},0);}
   function discount(){return promo?Math.round(goods()*promo.pct/100):0;}
   function goodsAfter(){return goods()-discount();}
-  function city(){return CITIES[document.getElementById('d-city').value]||CITIES['Москва'];}
+  function cityData(){return CITIES[selCity]||CITIES['Москва'];}
   function methodById(id){for(var i=0;i<METHODS.length;i++)if(METHODS[i].id===id)return METHODS[i];return METHODS[1];}
-  function shipCost(){if(!CART.length)return 0;var m=methodById(selMethod);if(goodsAfter()>=m.freeFrom)return 0;return m.base+city().sur;}
+  function shipCost(mode){if(!CART.length)return 0;if(mode==='pickup')return 0;var m=methodById(selMethod);if(goodsAfter()>=m.freeFrom)return 0;return m.base+cityData().sur;}
+  function methodsHTML(){
+    var c=cityData(),gA=goodsAfter();
+    return METHODS.map(function(m){
+      var free=gA>=m.freeFrom, cost=free?'<span class="dm-cost free">Бесплатно</span>':'<span class="dm-cost">'+money(m.base+c.sur)+'</span>';
+      return '<label class="dm'+(m.id===selMethod?' on':'')+'" data-m="'+m.id+'"><span class="radio"></span>'
+        +'<div><div class="dm-name">'+m.name+'</div><div class="dm-sub">Срок: '+c.days[m.day]+'</div></div>'+cost+'</label>';
+    }).join('');
+  }
 
   var rmIc='<svg viewBox="0 0 24 24" style="stroke:currentColor;fill:none;stroke-width:1.7"><path d="M6 7h12M9 7V5h6v2M8 7l1 12h6l1-12"/></svg>';
   function renderList(){
@@ -1605,16 +1781,9 @@ function toast(t){var el=document.getElementById('toast');if(!el)return;el.textC
         +'</div>';
     }).join('');
   }
-  function renderMethods(){
-    var mEl=document.getElementById('d-methods'),c=city(),gA=goodsAfter();
-    mEl.innerHTML=METHODS.map(function(m){
-      var free=gA>=m.freeFrom, cost=free?'<span class="dm-cost free">Бесплатно</span>':'<span class="dm-cost">'+money(m.base+c.sur)+'</span>';
-      return '<label class="dm'+(m.id===selMethod?' on':'')+'" data-m="'+m.id+'"><span class="radio"></span>'
-        +'<div><div class="dm-name">'+m.name+'</div><div class="dm-sub">Срок: '+c.days[m.day]+'</div></div>'+cost+'</label>';
-    }).join('');
-  }
-  function renderSummary(){
-    var g=goods(),d=discount(),ship=shipCost(),qt=qtyTotal();
+  function renderCartSummary(){
+    var g=goods(),d=discount(),ship=shipCost('delivery'),qt=qtyTotal();
+    document.getElementById('d-methods').innerHTML=methodsHTML();
     document.getElementById('s-qty').textContent=qt;
     document.getElementById('s-goods').textContent=money(g);
     var dr=document.getElementById('s-disc-row');
@@ -1624,26 +1793,55 @@ function toast(t){var el=document.getElementById('toast');if(!el)return;el.textC
     document.getElementById('cart-count').textContent=qt+' '+plural(qt,'товар','товара','товаров')+' на '+money(g);
     document.querySelectorAll('.hbtn .badge').forEach(function(b){b.textContent=qt;b.style.display=qt?'':'none';});
   }
-  function renderAll(){renderList();renderMethods();renderSummary();}
+  function renderCheckout(){
+    var listC=document.getElementById('co-list');if(!listC)return;
+    listC.innerHTML=CART.length?CART.map(function(it){
+      return '<div class="cm"><span>'+it.name+' <span class="cm-q">×'+it.qty+'</span></span><b>'+money(it.price*it.qty)+'</b></div>';
+    }).join(''):'<div class="cm"><span>Корзина пуста</span></div>';
+    document.getElementById('co-dm').innerHTML=methodsHTML();
+    var g=goods(),d=discount(),ship=shipCost(selMode),qt=qtyTotal();
+    document.getElementById('co-qty').textContent=qt;
+    document.getElementById('co-goods').textContent=money(g);
+    var dr=document.getElementById('co-disc-row');
+    if(d>0){dr.style.display='';document.getElementById('co-disc').textContent='−'+money(d);}else dr.style.display='none';
+    document.getElementById('co-ship').textContent=CART.length?(ship===0?(selMode==='pickup'?'Бесплатно (самовывоз)':'Бесплатно'):money(ship)):'—';
+    document.getElementById('co-total').textContent=money(CART.length?(goodsAfter()+ship):0);
+  }
+  function renderAll(){renderList();renderCartSummary();renderCheckout();}
 
   document.addEventListener('click',function(e){
-    if(!e.target.closest('#cart'))return;
-    var item=e.target.closest('.cart-item');
-    var qb=e.target.closest('.qty.sm button');
-    if(qb&&item){var i=+item.dataset.i;if(qb.dataset.act==='inc')CART[i].qty++;else if(CART[i].qty>1)CART[i].qty--;if(promo)recheckPromo();renderAll();return;}
-    if(e.target.closest('.ci-rm')&&item){CART.splice(+item.dataset.i,1);if(promo)recheckPromo();renderAll();return;}
-    var dm=e.target.closest('.dm');
-    if(dm){selMethod=dm.dataset.m;renderMethods();renderSummary();return;}
+    /* checkout: payment */
+    var pay=e.target.closest('#co-pay .dm');
+    if(pay){selPay=pay.dataset.pay;document.querySelectorAll('#co-pay .dm').forEach(function(x){x.classList.toggle('on',x===pay);});return;}
+    /* checkout: get mode */
+    var seg=e.target.closest('#co-mode .seg');
+    if(seg){selMode=seg.dataset.mode;
+      document.querySelectorAll('#co-mode .seg').forEach(function(x){x.classList.toggle('on',x===seg);});
+      document.getElementById('co-delivery').style.display=selMode==='delivery'?'':'none';
+      document.getElementById('co-pickup').style.display=selMode==='pickup'?'':'none';
+      renderCheckout();return;}
+    /* delivery method (cart or checkout) */
+    var dm=e.target.closest('.dm[data-m]');
+    if(dm){selMethod=dm.dataset.m;renderAll();return;}
+    /* cart qty / remove */
+    if(e.target.closest('#cart')){
+      var item=e.target.closest('.cart-item');
+      var qb=e.target.closest('.qty.sm button');
+      if(qb&&item){var i=+item.dataset.i;if(qb.dataset.act==='inc')CART[i].qty++;else if(CART[i].qty>1)CART[i].qty--;renderAll();return;}
+      if(e.target.closest('.ci-rm')&&item){CART.splice(+item.dataset.i,1);renderAll();return;}
+    }
   });
-  document.getElementById('d-city').addEventListener('change',function(){renderMethods();renderSummary();});
 
-  function recheckPromo(){/* keep promo valid even if cart changes */}
+  function onCity(val){selCity=val;var a=document.getElementById('d-city'),b=document.getElementById('co-city');if(a)a.value=val;if(b)b.value=val;renderAll();}
+  document.getElementById('d-city').addEventListener('change',function(){onCity(this.value);});
+  var coCity=document.getElementById('co-city');if(coCity)coCity.addEventListener('change',function(){onCity(this.value);});
+
   function applyPromo(){
     var v=document.getElementById('promo-in').value.trim().toUpperCase(),msg=document.getElementById('promo-msg');
-    if(!v){promo=null;msg.textContent='';msg.className='promo-msg';renderMethods();renderSummary();return;}
+    if(!v){promo=null;msg.textContent='';msg.className='promo-msg';renderAll();return;}
     if(PROMOS[v]){promo={code:v,pct:PROMOS[v]};msg.textContent='Промокод применен: −'+PROMOS[v]+'%';msg.className='promo-msg ok';}
     else{promo=null;msg.textContent='Промокод не найден';msg.className='promo-msg err';}
-    renderMethods();renderSummary();
+    renderAll();
   }
   document.getElementById('promo-btn').addEventListener('click',applyPromo);
   document.getElementById('promo-in').addEventListener('keydown',function(e){if(e.key==='Enter')applyPromo();});
@@ -1654,10 +1852,45 @@ function toast(t){var el=document.getElementById('toast');if(!el)return;el.textC
       navigator.clipboard.writeText(SHARE_URL).then(function(){toast('Ссылка на корзину скопирована');},function(){toast(SHARE_URL);});
     else toast(SHARE_URL);
   });
-  document.getElementById('share-tg').addEventListener('click',function(){window.open('https://t.me/share/url?url='+encodeURIComponent(SHARE_URL)+'&text='+encodeURIComponent('Моя корзина в BIOHACKER'),'_blank','noopener');});
-  document.getElementById('share-wa').addEventListener('click',function(){window.open('https://wa.me/?text='+encodeURIComponent('Моя корзина в BIOHACKER: '+SHARE_URL),'_blank','noopener');});
+
+  var coBtn=document.getElementById('co-confirm');
+  if(coBtn)coBtn.addEventListener('click',function(){
+    if(!CART.length){toast('Корзина пуста - добавьте товары');return;}
+    toast('Заказ оформлен! Менеджер свяжется с вами для подтверждения.');
+  });
+
+  /* address suggestions */
+  var STREETS=['Тверская ул., 1','Тверская ул., 15','Ленинский пр-т, 45','пр-т Мира, 33','ул. Арбат, 20','Кутузовский пр-т, 12','ул. Новый Арбат, 8','Профсоюзная ул., 56','Ленинградский пр-т, 37','ул. Пушкина, 7','Невский пр-т, 28','наб. Реки Фонтанки, 10'];
+  var addrIn=document.getElementById('addr-in'),addrList=document.getElementById('addr-list');
+  var pinIc='<svg viewBox="0 0 24 24"><path d="M12 21c5-5 7-8 7-11a7 7 0 10-14 0c0 3 2 6 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>';
+  if(addrIn){
+    addrIn.addEventListener('input',function(){
+      var v=addrIn.value.trim().toLowerCase();
+      if(!v){addrList.classList.remove('show');return;}
+      var m=STREETS.filter(function(s){return s.toLowerCase().indexOf(v)>=0;}).slice(0,6);
+      if(!m.length){addrList.classList.remove('show');return;}
+      addrList.innerHTML=m.map(function(s){return '<a data-addr="'+s+'">'+pinIc+s+'</a>';}).join('');
+      addrList.classList.add('show');
+    });
+    document.addEventListener('click',function(e){
+      var a=e.target.closest('#addr-list a');
+      if(a){addrIn.value=a.getAttribute('data-addr');addrList.classList.remove('show');return;}
+      if(!e.target.closest('.addr-wrap'))addrList.classList.remove('show');
+    });
+  }
 
   renderAll();
+})();
+
+/* ---------- consultation modal ---------- */
+(function(){
+  var ov=document.getElementById('consult-modal');if(!ov)return;
+  function close(){ov.classList.remove('show');document.body.style.overflow='';}
+  document.addEventListener('click',function(e){
+    if(e.target.closest('[data-consult]')){e.preventDefault();ov.classList.add('show');document.body.style.overflow='hidden';return;}
+    if(e.target.closest('[data-consult-close]')||e.target===ov){close();}
+  });
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
 })();
 </script>
 </body>
