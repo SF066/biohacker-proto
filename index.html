@@ -1244,13 +1244,6 @@
             <div class="cart-list" id="cart-list"></div>
             <div class="cart-empty" id="cart-empty">Корзина пуста. <a data-go="home" style="color:var(--orange);font-weight:600">Вернуться в магазин →</a></div>
 
-            <div class="delivery-box">
-              <h4><svg viewBox="0 0 24 24"><path d="M3 13h13V6H3zM16 8h4l2 3v4h-6z"/><circle cx="7" cy="17" r="2"/><circle cx="18" cy="17" r="2"/></svg> Расчет доставки</h4>
-              <p class="db-hint">Укажите город и способ - посчитаем стоимость и сроки. Бесплатно при заказе от 5 000 ₽ (курьер - от 15 000 ₽).</p>
-              <div class="city-in"><svg viewBox="0 0 24 24"><path d="M12 21c5-5 7-8 7-11a7 7 0 10-14 0c0 3 2 6 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><select id="d-city"><option>Москва</option><option>Санкт-Петербург</option><option>Город-миллионник</option><option>Другой регион</option></select></div>
-              <div class="dm-opts" id="d-methods"></div>
-            </div>
-
             <a class="cart-back" data-go="home"><svg class="ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg> Продолжить покупки</a>
           </div>
 
@@ -1260,8 +1253,8 @@
             <div class="promo-msg" id="promo-msg"></div>
             <div class="sum-row"><span>Товары (<span id="s-qty">0</span>)</span><b id="s-goods">—</b></div>
             <div class="sum-row" id="s-disc-row" style="display:none"><span class="disc">Скидка по промокоду</span><b class="disc" id="s-disc">−0 ₽</b></div>
-            <div class="sum-row"><span>Доставка</span><b id="s-ship">—</b></div>
-            <div class="sum-row total"><span>К оплате</span><b id="s-total">—</b></div>
+            <div class="sum-row"><span>Доставка</span><b id="s-ship" style="font-weight:600;color:var(--muted);font-size:13px">при оформлении</b></div>
+            <div class="sum-row total"><span>Итого</span><b id="s-total">—</b></div>
             <button class="btn" data-go="checkout">Перейти к оформлению</button>
             <button class="btn btn-1c">Купить в 1 клик</button>
             <button class="share-cart" id="share-copy"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg> Поделиться корзиной</button>
@@ -1299,11 +1292,7 @@
             </div>
 
             <div class="co-card">
-              <div class="co-step"><span class="co-num">2</span><h3>Способ получения</h3></div>
-              <div class="co-seg" id="co-mode">
-                <button type="button" class="seg on" data-mode="delivery">Доставка</button>
-                <button type="button" class="seg" data-mode="pickup">Самовывоз</button>
-              </div>
+              <div class="co-step"><span class="co-num">2</span><h3>Доставка</h3></div>
               <div id="co-delivery">
                 <div class="co-fields">
                   <div class="ff"><label>Город</label><div class="city-in" style="height:48px;margin:0"><svg viewBox="0 0 24 24"><path d="M12 21c5-5 7-8 7-11a7 7 0 10-14 0c0 3 2 6 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><select id="co-city"><option>Москва</option><option>Санкт-Петербург</option><option>Город-миллионник</option><option>Другой регион</option></select></div></div>
@@ -1313,9 +1302,6 @@
                   <div class="ff"><label>Подъезд / этаж</label><input type="text" placeholder="Необязательно"></div>
                 </div>
                 <div class="co-methods"><div class="dm-opts" id="co-dm"></div></div>
-              </div>
-              <div id="co-pickup" style="display:none">
-                <div class="pickup-note">Пункты самовывоза СДЭК и Boxberry в вашем городе - менеджер пришлёт список ближайших после оформления. Обычно заказ готов к выдаче через 2-4 дня. Самовывоз бесплатный.</div>
               </div>
             </div>
 
@@ -1750,7 +1736,7 @@ function toast(t){var el=document.getElementById('toast');if(!el)return;el.textC
     'Другой регион':{sur:120,days:['3-5 дней','3-5 дней','5-9 дней']}
   };
   var PROMOS={'SLIM15':15,'BIO10':10};
-  var selMethod='pvz', selCity='Москва', selMode='delivery', selPay='card', promo=null;
+  var selMethod='pvz', selCity='Москва', selPay='card', promo=null;
 
   function goods(){return CART.reduce(function(s,i){return s+i.price*i.qty;},0);}
   function qtyTotal(){return CART.reduce(function(s,i){return s+i.qty;},0);}
@@ -1758,7 +1744,7 @@ function toast(t){var el=document.getElementById('toast');if(!el)return;el.textC
   function goodsAfter(){return goods()-discount();}
   function cityData(){return CITIES[selCity]||CITIES['Москва'];}
   function methodById(id){for(var i=0;i<METHODS.length;i++)if(METHODS[i].id===id)return METHODS[i];return METHODS[1];}
-  function shipCost(mode){if(!CART.length)return 0;if(mode==='pickup')return 0;var m=methodById(selMethod);if(goodsAfter()>=m.freeFrom)return 0;return m.base+cityData().sur;}
+  function shipCost(){if(!CART.length)return 0;var m=methodById(selMethod);if(goodsAfter()>=m.freeFrom)return 0;return m.base+cityData().sur;}
   function methodsHTML(){
     var c=cityData(),gA=goodsAfter();
     return METHODS.map(function(m){
@@ -1782,14 +1768,13 @@ function toast(t){var el=document.getElementById('toast');if(!el)return;el.textC
     }).join('');
   }
   function renderCartSummary(){
-    var g=goods(),d=discount(),ship=shipCost('delivery'),qt=qtyTotal();
-    document.getElementById('d-methods').innerHTML=methodsHTML();
+    var g=goods(),d=discount(),qt=qtyTotal();
     document.getElementById('s-qty').textContent=qt;
     document.getElementById('s-goods').textContent=money(g);
     var dr=document.getElementById('s-disc-row');
     if(d>0){dr.style.display='';document.getElementById('s-disc').textContent='−'+money(d);}else dr.style.display='none';
-    document.getElementById('s-ship').textContent=CART.length?(ship===0?'Бесплатно':money(ship)):'—';
-    document.getElementById('s-total').textContent=money(CART.length?(goodsAfter()+ship):0);
+    document.getElementById('s-ship').textContent=CART.length?'при оформлении':'—';
+    document.getElementById('s-total').textContent=money(CART.length?goodsAfter():0);
     document.getElementById('cart-count').textContent=qt+' '+plural(qt,'товар','товара','товаров')+' на '+money(g);
     document.querySelectorAll('.hbtn .badge').forEach(function(b){b.textContent=qt;b.style.display=qt?'':'none';});
   }
@@ -1799,12 +1784,12 @@ function toast(t){var el=document.getElementById('toast');if(!el)return;el.textC
       return '<div class="cm"><span>'+it.name+' <span class="cm-q">×'+it.qty+'</span></span><b>'+money(it.price*it.qty)+'</b></div>';
     }).join(''):'<div class="cm"><span>Корзина пуста</span></div>';
     document.getElementById('co-dm').innerHTML=methodsHTML();
-    var g=goods(),d=discount(),ship=shipCost(selMode),qt=qtyTotal();
+    var g=goods(),d=discount(),ship=shipCost(),qt=qtyTotal();
     document.getElementById('co-qty').textContent=qt;
     document.getElementById('co-goods').textContent=money(g);
     var dr=document.getElementById('co-disc-row');
     if(d>0){dr.style.display='';document.getElementById('co-disc').textContent='−'+money(d);}else dr.style.display='none';
-    document.getElementById('co-ship').textContent=CART.length?(ship===0?(selMode==='pickup'?'Бесплатно (самовывоз)':'Бесплатно'):money(ship)):'—';
+    document.getElementById('co-ship').textContent=CART.length?(ship===0?'Бесплатно':money(ship)):'—';
     document.getElementById('co-total').textContent=money(CART.length?(goodsAfter()+ship):0);
   }
   function renderAll(){renderList();renderCartSummary();renderCheckout();}
@@ -1813,13 +1798,6 @@ function toast(t){var el=document.getElementById('toast');if(!el)return;el.textC
     /* checkout: payment */
     var pay=e.target.closest('#co-pay .dm');
     if(pay){selPay=pay.dataset.pay;document.querySelectorAll('#co-pay .dm').forEach(function(x){x.classList.toggle('on',x===pay);});return;}
-    /* checkout: get mode */
-    var seg=e.target.closest('#co-mode .seg');
-    if(seg){selMode=seg.dataset.mode;
-      document.querySelectorAll('#co-mode .seg').forEach(function(x){x.classList.toggle('on',x===seg);});
-      document.getElementById('co-delivery').style.display=selMode==='delivery'?'':'none';
-      document.getElementById('co-pickup').style.display=selMode==='pickup'?'':'none';
-      renderCheckout();return;}
     /* delivery method (cart or checkout) */
     var dm=e.target.closest('.dm[data-m]');
     if(dm){selMethod=dm.dataset.m;renderAll();return;}
@@ -1832,8 +1810,7 @@ function toast(t){var el=document.getElementById('toast');if(!el)return;el.textC
     }
   });
 
-  function onCity(val){selCity=val;var a=document.getElementById('d-city'),b=document.getElementById('co-city');if(a)a.value=val;if(b)b.value=val;renderAll();}
-  document.getElementById('d-city').addEventListener('change',function(){onCity(this.value);});
+  function onCity(val){selCity=val;var b=document.getElementById('co-city');if(b)b.value=val;renderAll();}
   var coCity=document.getElementById('co-city');if(coCity)coCity.addEventListener('change',function(){onCity(this.value);});
 
   function applyPromo(){
