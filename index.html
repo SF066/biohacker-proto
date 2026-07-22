@@ -282,7 +282,7 @@
   .footer .fdisc{padding-bottom:34px;font-size:11.5px;color:#5D6169;line-height:1.5;max-width:900px}
 
   /* ---------- prototype switcher ---------- */
-  .switcher{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);z-index:99;background:#1D1D1F;border-radius:14px;padding:6px;display:flex;gap:4px;box-shadow:0 10px 34px rgba(0,0,0,.3)}
+  .switcher{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);z-index:99;background:#1D1D1F;border-radius:14px;padding:6px;display:flex;flex-wrap:wrap;justify-content:center;gap:4px;box-shadow:0 10px 34px rgba(0,0,0,.3);max-width:calc(100vw - 20px)}
   .switcher button{color:#B9BEC5;font-size:13px;font-weight:600;padding:9px 18px;border-radius:10px;transition:.15s}
   .switcher button.on{background:var(--orange);color:#fff}
   .switcher .lab{color:#6B7178;font-size:11px;align-self:center;padding:0 10px 0 6px}
@@ -612,6 +612,155 @@
     .certs{grid-template-columns:1fr}
     .hact{gap:16px}
   }
+
+  /* ============ dosage calculator (PDP) ============ */
+  .calc{border:1px solid var(--line);border-radius:18px;overflow:hidden;margin:30px 0}
+  .calc-head{display:flex;align-items:center;gap:14px;padding:22px 26px;background:linear-gradient(120deg,#FFF3EC,#FDECE2);border-bottom:1px solid var(--line)}
+  .calc-head .ci{width:46px;height:46px;border-radius:12px;background:var(--orange);color:#fff;display:flex;align-items:center;justify-content:center;flex:none}
+  .calc-head .ci svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:1.7}
+  .calc-head h3{margin:0;font-size:20px;font-weight:800;letter-spacing:-.3px}
+  .calc-head p{margin:3px 0 0;font-size:13px;color:#6B7178;max-width:640px}
+  .calc-body{display:grid;grid-template-columns:1fr 1fr}
+  .calc-inputs{padding:26px;display:flex;flex-direction:column;gap:16px;border-right:1px solid var(--line)}
+  .cfield label{display:block;font-size:13px;font-weight:600;margin-bottom:8px;color:#3A3F45}
+  .cfield .cin{display:flex;align-items:center;border:1px solid var(--line);border-radius:12px;height:50px;padding:0 6px 0 14px;background:#fff;transition:border-color .15s}
+  .cfield .cin:focus-within{border-color:var(--orange)}
+  .cfield input,.cfield select{flex:1;border:0;outline:none;font-family:inherit;font-size:15px;font-weight:600;color:var(--ink);background:none;min-width:0}
+  .cfield .unit{font-size:13px;color:var(--muted);padding:0 10px;white-space:nowrap}
+  .calc-out{padding:26px;background:var(--soft-2);display:flex;flex-direction:column;gap:12px}
+  .cout-main{background:var(--orange);color:#fff;border-radius:14px;padding:18px 20px}
+  .cout-main .cl{font-size:13px;opacity:.85;margin-bottom:2px}
+  .cout-main .cv{font-size:30px;font-weight:800;letter-spacing:-.5px;line-height:1.05}
+  .cout-main .cv small{font-size:15px;font-weight:600;opacity:.92}
+  .cout-row{display:flex;justify-content:space-between;align-items:baseline;font-size:14px;padding:11px 2px;border-bottom:1px solid var(--line)}
+  .cout-row:last-child{border-bottom:0}
+  .cout-row span{color:#5A6068}
+  .cout-row b{font-size:17px;font-weight:700}
+  .calc-note{font-size:12px;color:var(--muted);padding:0 26px 22px;line-height:1.55}
+  .desc-tip{display:flex;gap:12px;align-items:flex-start;background:#FFF6F1;border:1px solid #F6DECF;border-radius:12px;padding:14px 16px;font-size:13px;color:#5A4232;line-height:1.5;margin:16px 0 6px}
+  .desc-tip svg{width:20px;height:20px;flex:none;color:var(--orange);stroke:var(--orange);fill:none;stroke-width:1.7;margin-top:1px}
+
+  /* ============ wholesale band (home) + wholesale page ============ */
+  .opt-band{display:grid;grid-template-columns:1.35fr .95fr;gap:30px;align-items:center;background:linear-gradient(120deg,#1D1D1F,#2C2C31);border-radius:20px;padding:34px 40px;color:#fff;overflow:hidden;position:relative}
+  .opt-band .ob-kick{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px}
+  .opt-band h3{font-size:30px;font-weight:800;letter-spacing:-.6px;margin:0 0 10px}
+  .opt-band>div>p{color:#C6CBD2;font-size:14.5px;margin:0 0 18px;max-width:94%}
+  .opt-tiers{display:flex;gap:10px;flex-wrap:wrap}
+  .opt-tiers .ot{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);border-radius:12px;padding:10px 15px;text-align:center;min-width:78px}
+  .opt-tiers .ot b{display:block;font-size:21px;font-weight:800;color:var(--orange);line-height:1}
+  .opt-tiers .ot span{font-size:11px;color:#AEB4BC}
+  .opt-cta{display:flex;flex-direction:column;gap:12px}
+  .big-tg{display:inline-flex;align-items:center;justify-content:center;gap:10px;background:var(--tg);color:#fff;height:52px;padding:0 26px;border-radius:12px;font-size:15px;font-weight:700;transition:transform .15s,filter .15s}
+  .big-tg:hover{transform:translateY(-1px);filter:brightness(1.05)}
+  .big-tg svg{width:21px;height:21px;fill:#fff;stroke:none}
+  .opt-cta .oc-link{color:#fff;font-weight:600;font-size:14px;text-align:center;opacity:.9}
+  .opt-cta .oc-link:hover{color:var(--orange)}
+
+  .page-head{padding:14px 0 8px}
+  .page-head h1{font-size:34px;font-weight:800;letter-spacing:-.8px;margin:0 0 10px}
+  .page-head p{color:#5A6068;font-size:15px;max-width:680px;margin:0}
+  .tiers{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:8px 0}
+  .tier{border:1px solid var(--line);border-radius:16px;padding:28px 20px;text-align:center;position:relative;transition:.15s;background:#fff}
+  .tier:hover{border-color:var(--orange);box-shadow:var(--shadow);transform:translateY(-2px)}
+  .tier .tp{font-size:42px;font-weight:800;color:var(--orange);letter-spacing:-1px;line-height:1}
+  .tier .tl{font-size:15px;font-weight:700;color:var(--ink);margin-top:10px}
+  .tier .ts{font-size:12.5px;color:var(--muted);margin-top:6px}
+  .tier.pop{border-color:var(--orange);background:linear-gradient(180deg,#FFF6F1,#fff)}
+  .tier .badge2{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--orange);color:#fff;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;white-space:nowrap}
+  .wbenefits{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:8px 0}
+  .wben{border:1px solid var(--line);border-radius:14px;padding:22px;display:flex;gap:14px;align-items:flex-start}
+  .wben .wi{width:42px;height:42px;border-radius:11px;background:#FFF3EC;color:var(--orange);display:flex;align-items:center;justify-content:center;flex:none}
+  .wben .wi svg{width:22px;height:22px;stroke:var(--orange);fill:none;stroke-width:1.6}
+  .wben b{display:block;font-size:15px;margin-bottom:5px}
+  .wben span{font-size:13px;color:#6B7178;line-height:1.5}
+  .wcta{background:linear-gradient(120deg,#FFF3EC,#FDECE2);border:1px solid #F6D9C8;border-radius:20px;padding:40px;text-align:center;margin:8px 0}
+  .wcta h3{font-size:26px;font-weight:800;letter-spacing:-.5px;margin:0 0 8px}
+  .wcta p{color:#5A4232;font-size:14.5px;margin:0 auto 22px;max-width:520px}
+  .wcta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .wcta .ghost-btn{display:inline-flex;align-items:center;gap:9px;height:52px;padding:0 24px;border-radius:12px;background:#fff;border:1px solid var(--line);font-size:15px;font-weight:600;color:var(--ink)}
+  .wcta .ghost-btn:hover{border-color:var(--orange);color:var(--orange)}
+  .wsteps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:8px 0;counter-reset:st}
+  .wstep{position:relative;padding:22px 20px 22px;border:1px solid var(--line);border-radius:14px}
+  .wstep:before{counter-increment:st;content:counter(st);position:absolute;top:20px;left:20px;width:30px;height:30px;border-radius:9px;background:var(--orange);color:#fff;font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center}
+  .wstep b{display:block;font-size:15px;margin:44px 0 6px}
+  .wstep span{font-size:13px;color:#6B7178;line-height:1.5}
+
+  /* ============ cart page ============ */
+  .cart-grid{display:grid;grid-template-columns:1fr 380px;gap:24px;align-items:start;margin-top:8px}
+  .cart-empty{border:1px dashed var(--line);border-radius:16px;padding:40px;text-align:center;color:var(--muted);display:none}
+  .cart-item{display:grid;grid-template-columns:88px 1fr auto;gap:18px;padding:18px 20px;border:1px solid var(--line);border-radius:16px;margin-bottom:14px;align-items:center}
+  .cart-item .cthumb{width:88px;height:88px;border-radius:12px;background:var(--soft);display:flex;align-items:center;justify-content:center;padding:8px}
+  .cart-item .cthumb svg{height:74px}
+  .cart-item .cname{font-size:15.5px;font-weight:700}
+  .cart-item .cart-art{font-size:12.5px;color:var(--muted);margin-top:3px}
+  .cart-item .cprice-1{font-size:13px;color:var(--muted);margin-top:10px}
+  .ci-right{display:flex;flex-direction:column;align-items:flex-end;gap:12px}
+  .ci-total{font-size:18px;font-weight:800;white-space:nowrap}
+  .ci-rm{font-size:12.5px;color:var(--muted);display:inline-flex;align-items:center;gap:5px}
+  .ci-rm svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.7}
+  .ci-rm:hover{color:#E0483B}
+  .qty.sm{height:40px;border-radius:10px}
+  .qty.sm button{width:36px;font-size:17px}
+  .qty.sm input{width:34px;font-size:14px}
+  .summary{border:1px solid var(--line);border-radius:18px;padding:24px;position:sticky;top:16px;box-shadow:var(--shadow)}
+  .summary h3{margin:0 0 18px;font-size:19px;font-weight:800}
+  .promo{display:flex;gap:8px;margin-bottom:6px}
+  .promo input{flex:1;border:1px solid var(--line);border-radius:11px;height:46px;padding:0 14px;font-family:inherit;font-size:14px;outline:none;text-transform:uppercase}
+  .promo input:focus{border-color:var(--orange)}
+  .promo button{height:46px;padding:0 18px;border-radius:11px;background:var(--soft);font-weight:600;color:var(--ink)}
+  .promo button:hover{background:#EAECEF}
+  .promo-msg{font-size:12.5px;margin:2px 0 14px;min-height:16px}
+  .promo-msg.ok{color:var(--green)} .promo-msg.err{color:#E0483B}
+  .sum-row{display:flex;justify-content:space-between;font-size:14px;padding:9px 0;color:#3A3F45}
+  .sum-row .disc{color:var(--green);font-weight:600}
+  .sum-row.total{border-top:1px solid var(--line);margin-top:8px;padding-top:16px;font-size:21px;font-weight:800;color:var(--ink)}
+  .summary .btn{width:100%;justify-content:center;margin-top:16px;height:54px}
+  .summary .btn-1c{background:none;color:var(--orange);border:1px solid var(--orange);margin-top:10px;height:48px}
+  .summary .btn-1c:hover{background:#FFF6F1}
+  .share-row{display:flex;gap:10px;margin-top:16px}
+  .share-row button{flex:1;height:44px;border-radius:11px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px;font-weight:600;color:#3A3F45;background:#fff}
+  .share-row button svg{width:16px;height:16px}
+  .share-row button:hover{border-color:var(--orange);color:var(--orange)}
+  .delivery-box{border:1px solid var(--line);border-radius:16px;padding:22px;margin-bottom:14px}
+  .delivery-box h4{margin:0 0 6px;font-size:16px;font-weight:700;display:flex;align-items:center;gap:9px}
+  .delivery-box h4 svg{width:20px;height:20px;stroke:var(--orange);fill:none;stroke-width:1.6}
+  .db-hint{font-size:12.5px;color:var(--muted);margin:0 0 14px}
+  .city-in{display:flex;align-items:center;border:1px solid var(--line);border-radius:12px;height:48px;padding:0 14px;margin-bottom:14px}
+  .city-in svg{width:18px;height:18px;stroke:var(--muted);fill:none;stroke-width:1.6;margin-right:10px}
+  .city-in select{flex:1;border:0;outline:none;background:none;font-family:inherit;font-size:14.5px;font-weight:600;color:var(--ink)}
+  .dm-opts{display:flex;flex-direction:column;gap:10px}
+  .dm{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:12px;padding:12px 15px;cursor:pointer;transition:.15s}
+  .dm:hover{border-color:var(--muted-2)}
+  .dm.on{border-color:var(--orange);background:#FFF6F1}
+  .dm .radio{width:18px;height:18px;border-radius:50%;border:2px solid var(--muted-2);flex:none}
+  .dm.on .radio{border-color:var(--orange);background:radial-gradient(circle at center,var(--orange) 0 4px,#fff 5px)}
+  .dm .dm-name{font-weight:600;font-size:14px}
+  .dm .dm-sub{font-size:12px;color:var(--muted);margin-top:2px}
+  .dm .dm-cost{margin-left:auto;font-weight:700;font-size:14.5px;white-space:nowrap}
+  .dm .dm-cost.free{color:var(--green)}
+  .cart-back{display:inline-flex;align-items:center;gap:8px;color:var(--orange);font-weight:600;font-size:14px;margin-top:18px}
+
+  .toast{position:fixed;bottom:84px;left:50%;transform:translateX(-50%) translateY(20px);background:#1D1D1F;color:#fff;font-size:13.5px;font-weight:600;padding:12px 20px;border-radius:12px;box-shadow:0 10px 34px rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:.25s;z-index:120}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  @media(max-width:900px){
+    .calc-body{grid-template-columns:1fr}
+    .calc-inputs{border-right:0;border-bottom:1px solid var(--line)}
+    .opt-band{grid-template-columns:1fr;gap:22px;padding:28px 24px}
+    .tiers,.wsteps{grid-template-columns:repeat(2,1fr)}
+    .wbenefits{grid-template-columns:1fr}
+    .cart-grid{grid-template-columns:1fr}
+    .summary{position:static}
+  }
+  @media(max-width:520px){
+    .page-head h1{font-size:26px}
+    .tiers,.wsteps{grid-template-columns:1fr}
+    .opt-tiers .ot{flex:1;min-width:0}
+    .cart-item{grid-template-columns:64px 1fr;gap:14px;padding:16px}
+    .cart-item .cthumb{width:64px;height:64px}
+    .cart-item .ci-right{grid-column:1/-1;flex-direction:row;justify-content:space-between;align-items:center;width:100%}
+    .wcta{padding:28px 20px}
+  }
 </style>
 
 <div class="site">
@@ -674,6 +823,27 @@
           <div class="promo-col">
             <div class="promo-sm"><h4>Ноотропы нового поколения</h4><p>Фокус. Память. Мышление. На максимум.</p><a class="link">Смотреть все →</a><span class="emoji">🧠</span></div>
             <div class="promo-sm"><h4>Грибы для иммунитета и энергии</h4><p>Сила природы для вашего здоровья</p><a class="link">Смотреть все →</a><span class="emoji">🍄</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- wholesale band -->
+      <section class="section" style="padding-top:6px">
+        <div class="opt-band">
+          <div>
+            <span class="ob-kick"><svg class="ic" viewBox="0 0 24 24" style="width:14px;stroke:var(--orange);stroke-width:1.8;fill:none"><path d="M3 9l9-6 9 6v10a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 21V12h6v9"/></svg> Для бизнеса и закупок</span>
+            <h3>Оптовые заказы</h3>
+            <p>Скидки до 10% на объем, персональный менеджер и приоритетная отгрузка. Работаем с магазинами, клиниками, тренерами и блогерами.</p>
+            <div class="opt-tiers">
+              <div class="ot"><b>3%</b><span>от 60 000 ₽</span></div>
+              <div class="ot"><b>5%</b><span>от 100 000 ₽</span></div>
+              <div class="ot"><b>7%</b><span>от 150 000 ₽</span></div>
+              <div class="ot"><b>10%</b><span>от 200 000 ₽</span></div>
+            </div>
+          </div>
+          <div class="opt-cta">
+            <a class="big-tg" href="https://t.me/biohacker" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M21.9 4.3l-3 14.2c-.2 1-.8 1.2-1.7.8l-4.6-3.4-2.2 2.1c-.3.3-.5.5-1 .5l.3-4.8 8.8-8c.4-.3-.1-.5-.6-.2L6.9 13 2.4 11.6c-1-.3-1-1 .2-1.4l17-6.6c.8-.3 1.5.2 1.3 1z"/></svg> Написать в Telegram</a>
+            <a class="oc-link" data-go="wholesale">Все условия опта →</a>
           </div>
         </div>
       </section>
@@ -813,6 +983,7 @@
         <div class="tab-panel on" data-tab="0"><div class="rich">
           <p class="lead">BAM-15 - современный митохондриальный активатор, который мягко ускоряет обмен веществ и помогает телу расходовать больше энергии в состоянии покоя. Один из немногих компонентов, работающих на уровне клеточной энергетики.</p>
           <div class="warn"><span style="font-size:18px">⚠️</span><div><b>Предупреждение:</b> не является лекарственным средством или БАД. Информация носит справочный характер и не предназначена для диагностики, лечения или профилактики заболеваний. Перед применением проконсультируйтесь со специалистом.</div></div>
+          <div class="desc-tip"><svg viewBox="0 0 24 24"><path d="M9 3h6M12 3v4M7 7h10l-1 12a2 2 0 01-2 2h-4a2 2 0 01-2-2z"/><path d="M8 13h8"/></svg><div><b>Не знаете дозировку?</b> Ниже на странице - калькулятор: введите объем разведения и нужную дозу, и он покажет, сколько набрать в шприц и на сколько приемов хватит флакона.</div></div>
           <h3>Как работает</h3>
           <p>Вещество усиливает термогенез в митохондриях: клетки тратят больше калорий на выработку тепла вместо того, чтобы запасать их в виде жира. При этом сохраняется мышечная масса и стабильный уровень энергии в течение дня - без стимуляторов и скачков пульса.</p>
           <h3>Основные эффекты</h3>
@@ -873,6 +1044,32 @@
 
       </div>
 
+      <section class="section" style="padding-top:6px">
+        <div class="calc" id="dose-calc">
+          <div class="calc-head">
+            <span class="ci"><svg viewBox="0 0 24 24"><path d="M9 3h6M12 3v4M7 7h10l-1 12a2 2 0 01-2 2h-4a2 2 0 01-2-2z"/><path d="M8 13h8"/></svg></span>
+            <div>
+              <h3>Калькулятор дозировки</h3>
+              <p>Точно рассчитайте, сколько препарата набрать в шприц после разведения. Укажите содержимое флакона, объем воды и нужную дозу - калькулятор покажет деления инсулинового шприца U-100 и на сколько приемов хватит флакона.</p>
+            </div>
+          </div>
+          <div class="calc-body">
+            <div class="calc-inputs">
+              <div class="cfield"><label>Пептид во флаконе</label><div class="cin"><input type="number" id="c-mg" value="10" min="0" step="0.5"><span class="unit">мг</span></div></div>
+              <div class="cfield"><label>Бактериостатическая вода</label><div class="cin"><input type="number" id="c-ml" value="2" min="0" step="0.1"><span class="unit">мл</span></div></div>
+              <div class="cfield"><label>Желаемая доза за прием</label><div class="cin"><input type="number" id="c-dose" value="250" min="0" step="10"><select id="c-unit"><option value="mcg">мкг</option><option value="mg">мг</option></select></div></div>
+            </div>
+            <div class="calc-out">
+              <div class="cout-main"><div class="cl">Набрать в шприц U-100</div><div class="cv" id="o-units">— <small>ед.</small></div></div>
+              <div class="cout-row"><span>Объем для набора</span><b id="o-vol">—</b></div>
+              <div class="cout-row"><span>Концентрация раствора</span><b id="o-conc">—</b></div>
+              <div class="cout-row"><span>Хватит на</span><b id="o-doses">—</b></div>
+            </div>
+          </div>
+          <div class="calc-note">Расчет для инсулинового шприца U-100 (100 единиц = 1 мл). Значения носят справочный характер и не являются медицинской рекомендацией. Точную схему подберет специалист - <a style="color:var(--orange);font-weight:600" href="#">бесплатная консультация</a>.</div>
+        </div>
+      </section>
+
       <section class="section">
         <div class="sec-head"><h2>Рекомендуемые товары</h2>
           <div class="carousel-ctrl">
@@ -886,13 +1083,129 @@
 
     <div data-footer></div>
   </div><!-- /product -->
+
+
+  <!-- ============================ WHOLESALE ============================ -->
+  <div class="page" id="wholesale">
+    <div data-shell></div>
+
+    <div class="wrap">
+      <div class="crumbs"><a data-go="home">Главная</a><span class="sep">/</span><span class="cur">Оптовые заказы</span></div>
+
+      <section class="section page-head">
+        <h1>Оптовые заказы</h1>
+        <p>Поставки пептидов, ноотропов, грибов и добавок оптом - для магазинов, клиник, тренеров и блогеров. Прозрачные скидки от объема заказа, персональный менеджер и приоритетная отгрузка со склада.</p>
+      </section>
+
+      <section class="section" style="padding-top:0">
+        <div class="sec-head"><h2>Скидки от суммы заказа</h2></div>
+        <div class="tiers">
+          <div class="tier"><div class="tp">3%</div><div class="tl">от 60 000 ₽</div><div class="ts">Старт оптового сотрудничества</div></div>
+          <div class="tier"><div class="tp">5%</div><div class="tl">от 100 000 ₽</div><div class="ts">Регулярные закупки</div></div>
+          <div class="tier pop"><span class="badge2">Популярный</span><div class="tp">7%</div><div class="tl">от 150 000 ₽</div><div class="ts">Для розничных точек</div></div>
+          <div class="tier"><div class="tp">10%</div><div class="tl">от 200 000 ₽</div><div class="ts">Максимальная выгода</div></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="sec-head"><h2>Почему работают с нами</h2></div>
+        <div class="wbenefits">
+          <div class="wben"><span class="wi"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></span><div><b>Персональный менеджер</b><span>Ведет ваши заказы от заявки до отгрузки и всегда на связи.</span></div></div>
+          <div class="wben"><span class="wi"><svg viewBox="0 0 24 24"><path d="M3 13h13V6H3zM16 8h4l2 3v4h-6z"/><circle cx="7" cy="17" r="2"/><circle cx="18" cy="17" r="2"/></svg></span><div><b>Приоритетная отгрузка</b><span>Резерв и отправка в день оплаты, без ожидания в общей очереди.</span></div></div>
+          <div class="wben"><span class="wi"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></span><div><b>Сертификаты на партию</b><span>HPLC-протоколы и документы на каждую поставку, чистота 99%.</span></div></div>
+          <div class="wben"><span class="wi"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18"/></svg></span><div><b>Отсрочка платежа</b><span>Индивидуальные условия для постоянных оптовых партнеров.</span></div></div>
+          <div class="wben"><span class="wi"><svg viewBox="0 0 24 24"><path d="M4 8l8-4 8 4-8 4z"/><path d="M4 8v8l8 4 8-4V8"/></svg></span><div><b>500+ позиций в наличии</b><span>Широкий ассортимент на складе - собираем заказ любой сложности.</span></div></div>
+          <div class="wben"><span class="wi"><svg viewBox="0 0 24 24"><path d="M12 21c5-5 7-8 7-11a7 7 0 10-14 0c0 3 2 6 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span><div><b>Доставка по всей России</b><span>Транспортные компании, ПВЗ и почта в анонимной упаковке.</span></div></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="sec-head"><h2>Как оформить оптовый заказ</h2></div>
+        <div class="wsteps">
+          <div class="wstep"><b>Оставьте заявку</b><span>Напишите в Telegram или WhatsApp нужный состав и объем.</span></div>
+          <div class="wstep"><b>Получите расчет</b><span>Менеджер подготовит спецификацию и размер скидки.</span></div>
+          <div class="wstep"><b>Оплата и резерв</b><span>Фиксируем цену и резервируем товар на складе.</span></div>
+          <div class="wstep"><b>Отгрузка</b><span>Отправляем в день оплаты с документами на партию.</span></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="wcta">
+          <h3>Остались вопросы?</h3>
+          <p>Напишите нам в Telegram - менеджер рассчитает индивидуальные условия под ваш объем, ассортимент и регион. Отвечаем в течение рабочего дня.</p>
+          <div class="wcta-btns">
+            <a class="big-tg" href="https://t.me/biohacker" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M21.9 4.3l-3 14.2c-.2 1-.8 1.2-1.7.8l-4.6-3.4-2.2 2.1c-.3.3-.5.5-1 .5l.3-4.8 8.8-8c.4-.3-.1-.5-.6-.2L6.9 13 2.4 11.6c-1-.3-1-1 .2-1.4l17-6.6c.8-.3 1.5.2 1.3 1z"/></svg> Написать в Telegram</a>
+            <a class="ghost-btn" href="https://wa.me/79775209700" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:var(--wa)"><path d="M12 2a10 10 0 00-8.6 15L2 22l5.2-1.4A10 10 0 1012 2zm5.3 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-1.7-.1-2.8-.9-4.6-3.7-4.7-3.9-.1-.2-1.1-1.5-1.1-2.8 0-1.3.7-2 .9-2.2.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.7 1.8c.1.2 0 .4-.1.5l-.4.5c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.2.1.4 0 .5-.1l.7-.8c.2-.2.3-.2.6-.1l1.6.8c.3.1.5.2.5.4z"/></svg> WhatsApp</a>
+            <a class="ghost-btn" href="tel:+79775209700"><svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:var(--orange);fill:none;stroke-width:1.6"><path d="M6.5 4h3l1.5 4-2 1.5a12 12 0 005.5 5.5L16 13l4 1.5v3a2 2 0 01-2.2 2A15.5 15.5 0 014.5 6.2 2 2 0 016.5 4z"/></svg> +7 (977) 520-97-00</a>
+          </div>
+        </div>
+      </section>
+    </div><!-- /wrap -->
+
+    <div data-footer></div>
+  </div><!-- /wholesale -->
+
+
+  <!-- ============================ CART ============================ -->
+  <div class="page" id="cart">
+    <div data-shell></div>
+
+    <div class="wrap">
+      <div class="crumbs"><a data-go="home">Главная</a><span class="sep">/</span><span class="cur">Корзина</span></div>
+
+      <section class="section page-head" style="padding-bottom:4px">
+        <h1>Корзина</h1>
+        <p id="cart-count">—</p>
+      </section>
+
+      <section class="section" style="padding-top:8px">
+        <div class="cart-grid">
+          <div>
+            <div class="cart-list" id="cart-list"></div>
+            <div class="cart-empty" id="cart-empty">Корзина пуста. <a data-go="home" style="color:var(--orange);font-weight:600">Вернуться в магазин →</a></div>
+
+            <div class="delivery-box">
+              <h4><svg viewBox="0 0 24 24"><path d="M3 13h13V6H3zM16 8h4l2 3v4h-6z"/><circle cx="7" cy="17" r="2"/><circle cx="18" cy="17" r="2"/></svg> Расчет доставки</h4>
+              <p class="db-hint">Укажите город и способ - посчитаем стоимость и сроки. Бесплатно при заказе от 5 000 ₽ (курьер - от 15 000 ₽).</p>
+              <div class="city-in"><svg viewBox="0 0 24 24"><path d="M12 21c5-5 7-8 7-11a7 7 0 10-14 0c0 3 2 6 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><select id="d-city"><option>Москва</option><option>Санкт-Петербург</option><option>Город-миллионник</option><option>Другой регион</option></select></div>
+              <div class="dm-opts" id="d-methods"></div>
+            </div>
+
+            <a class="cart-back" data-go="home"><svg class="ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg> Продолжить покупки</a>
+          </div>
+
+          <div class="summary">
+            <h3>Итог заказа</h3>
+            <div class="promo"><input id="promo-in" placeholder="Промокод" autocomplete="off"><button id="promo-btn">Применить</button></div>
+            <div class="promo-msg" id="promo-msg"></div>
+            <div class="sum-row"><span>Товары (<span id="s-qty">0</span>)</span><b id="s-goods">—</b></div>
+            <div class="sum-row" id="s-disc-row" style="display:none"><span class="disc">Скидка по промокоду</span><b class="disc" id="s-disc">−0 ₽</b></div>
+            <div class="sum-row"><span>Доставка</span><b id="s-ship">—</b></div>
+            <div class="sum-row total"><span>К оплате</span><b id="s-total">—</b></div>
+            <button class="btn">Оформить заказ</button>
+            <button class="btn btn-1c">Купить в 1 клик</button>
+            <div class="share-row">
+              <button id="share-copy"><svg viewBox="0 0 24 24" style="stroke:currentColor;fill:none;stroke-width:1.7"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg> Ссылка</button>
+              <button id="share-tg"><svg viewBox="0 0 24 24" style="fill:var(--tg)"><path d="M21.9 4.3l-3 14.2c-.2 1-.8 1.2-1.7.8l-4.6-3.4-2.2 2.1c-.3.3-.5.5-1 .5l.3-4.8 8.8-8c.4-.3-.1-.5-.6-.2L6.9 13 2.4 11.6c-1-.3-1-1 .2-1.4l17-6.6c.8-.3 1.5.2 1.3 1z"/></svg> Telegram</button>
+              <button id="share-wa"><svg viewBox="0 0 24 24" style="fill:var(--wa)"><path d="M12 2a10 10 0 00-8.6 15L2 22l5.2-1.4A10 10 0 1012 2zm5.3 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-1.7-.1-2.8-.9-4.6-3.7-4.7-3.9-.1-.2-1.1-1.5-1.1-2.8 0-1.3.7-2 .9-2.2.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.7 1.8c.1.2 0 .4-.1.5l-.4.5c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.2.1.4 0 .5-.1l.7-.8c.2-.2.3-.2.6-.1l1.6.8c.3.1.5.2.5.4z"/></svg> WhatsApp</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div><!-- /wrap -->
+
+    <div data-footer></div>
+  </div><!-- /cart -->
 </div><!-- /site -->
 
 <div class="switcher">
   <span class="lab">Прототип BIOHACKER</span>
   <button class="on" data-p="home">Главная</button>
   <button data-p="product">Карточка товара</button>
+  <button data-p="wholesale">Оптовые заказы</button>
+  <button data-p="cart">Корзина</button>
 </div>
+<div class="toast" id="toast"></div>
 
 <script>
 /* ---------- shared shell: top bar + header + nav ---------- */
@@ -998,7 +1311,7 @@ var SHELL = `
     <div class="search"><input placeholder="Поиск по товарам"><span class="go"><svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></span></div>
     <div class="hact">
       <a class="hbtn"><svg class="ic" viewBox="0 0 24 24"><path d="M12 20s-7-4.3-9.2-8.6C1.3 8.3 3 5 6.2 5 8 5 9.4 6 12 8.5 14.6 6 16 5 17.8 5 21 5 22.7 8.3 21.2 11.4 19 15.7 12 20 12 20z"/></svg> Избранное</a>
-      <a class="hbtn"><span class="badge">2</span><svg class="ic" viewBox="0 0 24 24"><path d="M6 6h15l-1.5 9h-12z"/><path d="M6 6L5 3H2"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/></svg> Корзина</a>
+      <a class="hbtn" data-go="cart"><span class="badge">2</span><svg class="ic" viewBox="0 0 24 24"><path d="M6 6h15l-1.5 9h-12z"/><path d="M6 6L5 3H2"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/></svg> Корзина</a>
       <a class="hbtn"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg> Войти</a>
     </div>
   </div></header>
@@ -1147,12 +1460,18 @@ document.getElementById('certs').innerHTML=CERTS.map(function(c){return `<div cl
 document.getElementById('prod-reviews').innerHTML=REVIEWS.slice(0,3).map(reviewHTML).join('');
 
 /* ---------- switcher + tabs ---------- */
+function showPage(id){
+  var pg=document.getElementById(id);if(!pg)return;
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('on'));
+  pg.classList.add('on');
+  document.querySelectorAll('.switcher button').forEach(x=>x.classList.toggle('on',x.dataset.p===id));
+  window.scrollTo(0,0);
+}
 document.querySelectorAll('.switcher button').forEach(function(b){
-  b.addEventListener('click',function(){
-    document.querySelectorAll('.switcher button').forEach(x=>x.classList.remove('on'));
-    document.querySelectorAll('.page').forEach(x=>x.classList.remove('on'));
-    b.classList.add('on');document.getElementById(b.dataset.p).classList.add('on');window.scrollTo(0,0);
-  });
+  b.addEventListener('click',function(){showPage(b.dataset.p);});
+});
+document.addEventListener('click',function(e){
+  var g=e.target.closest('[data-go]');if(g){e.preventDefault();showPage(g.dataset.go);}
 });
 document.addEventListener('click',function(e){
   var t=e.target.closest('.tabs .tab');if(!t)return;
@@ -1213,6 +1532,133 @@ document.addEventListener('mouseover',function(e){
 document.addEventListener('click',function(e){
   var c=e.target.closest('.mega-cat');if(c)megaSwitch(c);
 });
+
+/* ---------- helpers ---------- */
+function plural(n,a,b,c){var n10=n%10,n100=n%100;if(n10===1&&n100!==11)return a;if(n10>=2&&n10<=4&&(n100<10||n100>=20))return b;return c;}
+function money(n){return Math.round(n).toLocaleString('ru-RU')+' ₽';}
+function toast(t){var el=document.getElementById('toast');if(!el)return;el.textContent=t;el.classList.add('show');clearTimeout(el._t);el._t=setTimeout(function(){el.classList.remove('show');},2400);}
+
+/* ---------- dosage calculator ---------- */
+(function(){
+  var mg=document.getElementById('c-mg'),ml=document.getElementById('c-ml'),
+      dose=document.getElementById('c-dose'),unit=document.getElementById('c-unit');
+  if(!mg)return;
+  function fmt(n,d){var p=Math.pow(10,d);return (Math.round(n*p)/p).toLocaleString('ru-RU');}
+  function calc(){
+    var oU=document.getElementById('o-units'),oV=document.getElementById('o-vol'),
+        oC=document.getElementById('o-conc'),oD=document.getElementById('o-doses');
+    var vialMg=parseFloat(mg.value)||0, water=parseFloat(ml.value)||0, dv=parseFloat(dose.value)||0;
+    var doseMg=unit.value==='mg'?dv:dv/1000;
+    if(vialMg<=0||water<=0||doseMg<=0||doseMg>vialMg){
+      oU.innerHTML='— <small>ед.</small>';oV.textContent='—';oC.textContent='—';
+      oD.textContent = doseMg>vialMg?'доза больше флакона':'—';return;}
+    var conc=vialMg/water, volMl=doseMg/conc, units=volMl*100, doses=Math.floor(vialMg/doseMg);
+    oC.textContent=fmt(conc,2)+' мг/мл';
+    oV.textContent=fmt(volMl,3)+' мл';
+    oU.innerHTML=fmt(units,1)+' <small>ед.</small>';
+    oD.textContent=doses+' '+plural(doses,'прием','приема','приемов');
+  }
+  [mg,ml,dose,unit].forEach(function(el){el.addEventListener('input',calc);el.addEventListener('change',calc);});
+  calc();
+})();
+
+/* ---------- cart page ---------- */
+(function(){
+  var listEl=document.getElementById('cart-list');if(!listEl)return;
+  var CART=[
+    {art:vial(),name:'NAD+ 500mg',sub:'Пептиды · Арт. NAD500',price:7900,qty:1},
+    {art:blueJar(),name:'Epitalon 10mg',sub:'Пептиды · Арт. EPI10',price:12000,qty:1},
+    {art:jar('SEMAX','#1B1B1F','30mg'),name:'Semax 30mg',sub:'Ноотропы · Арт. SMX30',price:3400,qty:2}
+  ];
+  var METHODS=[
+    {id:'courier',name:'Курьер до двери',base:390,freeFrom:15000,day:0},
+    {id:'pvz',name:'Пункт выдачи (СДЭК, Boxberry)',base:250,freeFrom:5000,day:1},
+    {id:'post',name:'Почта России',base:300,freeFrom:5000,day:2}
+  ];
+  var CITIES={
+    'Москва':{sur:0,days:['Завтра, 1 день','1-2 дня','3-5 дней']},
+    'Санкт-Петербург':{sur:0,days:['1-2 дня','2-3 дня','4-6 дней']},
+    'Город-миллионник':{sur:60,days:['2-3 дня','2-4 дня','4-7 дней']},
+    'Другой регион':{sur:120,days:['3-5 дней','3-5 дней','5-9 дней']}
+  };
+  var PROMOS={'SLIM15':15,'BIO10':10};
+  var selMethod='pvz', promo=null;
+
+  function goods(){return CART.reduce(function(s,i){return s+i.price*i.qty;},0);}
+  function qtyTotal(){return CART.reduce(function(s,i){return s+i.qty;},0);}
+  function discount(){return promo?Math.round(goods()*promo.pct/100):0;}
+  function goodsAfter(){return goods()-discount();}
+  function city(){return CITIES[document.getElementById('d-city').value]||CITIES['Москва'];}
+  function methodById(id){for(var i=0;i<METHODS.length;i++)if(METHODS[i].id===id)return METHODS[i];return METHODS[1];}
+  function shipCost(){if(!CART.length)return 0;var m=methodById(selMethod);if(goodsAfter()>=m.freeFrom)return 0;return m.base+city().sur;}
+
+  var rmIc='<svg viewBox="0 0 24 24" style="stroke:currentColor;fill:none;stroke-width:1.7"><path d="M6 7h12M9 7V5h6v2M8 7l1 12h6l1-12"/></svg>';
+  function renderList(){
+    document.getElementById('cart-empty').style.display=CART.length?'none':'block';
+    listEl.innerHTML=CART.map(function(it,i){
+      return '<div class="cart-item" data-i="'+i+'">'
+        +'<div class="cthumb">'+it.art+'</div>'
+        +'<div><div class="cname">'+it.name+'</div><div class="cart-art">'+it.sub+'</div><div class="cprice-1">'+money(it.price)+' / шт.</div></div>'
+        +'<div class="ci-right"><div class="ci-total">'+money(it.price*it.qty)+'</div>'
+        +'<div class="qty sm"><button data-act="dec">−</button><input value="'+it.qty+'" readonly><button data-act="inc">+</button></div>'
+        +'<button class="ci-rm" data-act="rm">'+rmIc+' Удалить</button></div>'
+        +'</div>';
+    }).join('');
+  }
+  function renderMethods(){
+    var mEl=document.getElementById('d-methods'),c=city(),gA=goodsAfter();
+    mEl.innerHTML=METHODS.map(function(m){
+      var free=gA>=m.freeFrom, cost=free?'<span class="dm-cost free">Бесплатно</span>':'<span class="dm-cost">'+money(m.base+c.sur)+'</span>';
+      return '<label class="dm'+(m.id===selMethod?' on':'')+'" data-m="'+m.id+'"><span class="radio"></span>'
+        +'<div><div class="dm-name">'+m.name+'</div><div class="dm-sub">Срок: '+c.days[m.day]+'</div></div>'+cost+'</label>';
+    }).join('');
+  }
+  function renderSummary(){
+    var g=goods(),d=discount(),ship=shipCost(),qt=qtyTotal();
+    document.getElementById('s-qty').textContent=qt;
+    document.getElementById('s-goods').textContent=money(g);
+    var dr=document.getElementById('s-disc-row');
+    if(d>0){dr.style.display='';document.getElementById('s-disc').textContent='−'+money(d);}else dr.style.display='none';
+    document.getElementById('s-ship').textContent=CART.length?(ship===0?'Бесплатно':money(ship)):'—';
+    document.getElementById('s-total').textContent=money(CART.length?(goodsAfter()+ship):0);
+    document.getElementById('cart-count').textContent=qt+' '+plural(qt,'товар','товара','товаров')+' на '+money(g);
+    document.querySelectorAll('.hbtn .badge').forEach(function(b){b.textContent=qt;b.style.display=qt?'':'none';});
+  }
+  function renderAll(){renderList();renderMethods();renderSummary();}
+
+  document.addEventListener('click',function(e){
+    if(!e.target.closest('#cart'))return;
+    var item=e.target.closest('.cart-item');
+    var qb=e.target.closest('.qty.sm button');
+    if(qb&&item){var i=+item.dataset.i;if(qb.dataset.act==='inc')CART[i].qty++;else if(CART[i].qty>1)CART[i].qty--;if(promo)recheckPromo();renderAll();return;}
+    if(e.target.closest('.ci-rm')&&item){CART.splice(+item.dataset.i,1);if(promo)recheckPromo();renderAll();return;}
+    var dm=e.target.closest('.dm');
+    if(dm){selMethod=dm.dataset.m;renderMethods();renderSummary();return;}
+  });
+  document.getElementById('d-city').addEventListener('change',function(){renderMethods();renderSummary();});
+
+  function recheckPromo(){/* keep promo valid even if cart changes */}
+  function applyPromo(){
+    var v=document.getElementById('promo-in').value.trim().toUpperCase(),msg=document.getElementById('promo-msg');
+    if(!v){promo=null;msg.textContent='';msg.className='promo-msg';renderMethods();renderSummary();return;}
+    if(PROMOS[v]){promo={code:v,pct:PROMOS[v]};msg.textContent='Промокод применен: −'+PROMOS[v]+'%';msg.className='promo-msg ok';}
+    else{promo=null;msg.textContent='Промокод не найден';msg.className='promo-msg err';}
+    renderMethods();renderSummary();
+  }
+  document.getElementById('promo-btn').addEventListener('click',applyPromo);
+  document.getElementById('promo-in').addEventListener('keydown',function(e){if(e.key==='Enter')applyPromo();});
+
+  var SHARE_URL='https://biohacker3.ru/cart/s/BH-2026-1057';
+  document.getElementById('share-copy').addEventListener('click',function(){
+    if(navigator.clipboard&&navigator.clipboard.writeText)
+      navigator.clipboard.writeText(SHARE_URL).then(function(){toast('Ссылка на корзину скопирована');},function(){toast(SHARE_URL);});
+    else toast(SHARE_URL);
+  });
+  document.getElementById('share-tg').addEventListener('click',function(){window.open('https://t.me/share/url?url='+encodeURIComponent(SHARE_URL)+'&text='+encodeURIComponent('Моя корзина в BIOHACKER'),'_blank','noopener');});
+  document.getElementById('share-wa').addEventListener('click',function(){window.open('https://wa.me/?text='+encodeURIComponent('Моя корзина в BIOHACKER: '+SHARE_URL),'_blank','noopener');});
+
+  renderAll();
+})();
 </script>
 </body>
 </html>
